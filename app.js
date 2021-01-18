@@ -35,10 +35,6 @@ function init() {
   const near = 0.1;
   const far = 1000;
 
-  // let controls = new THREE.OrbitControls(camera, renderer.domElement);
-  // controls.update();
-  // scene.add(controls);
-
   //Camera setup
   camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   camera.position.set(0, 50, 600);
@@ -49,36 +45,22 @@ function init() {
   const light = new THREE.DirectionalLight(0xffffff, 2);
   light.position.set(50, 50, 100);
   scene.add(light);
-  
+
   let settings = {
     rotationY: 0,
     rotationX: 0,
-    rotationZ: 0    
-  }
+    rotationZ: 0,
+  };
 
   //dat GUI
-  let FizzyText = function () {
-    this.message = "текст";
-    this.opacity = 0.8;
-    this.display = true;
-    this.explode = function () {};
-    this.color0 = "#ff9966";
-    this.color1 = "#336699";
-    this.fontSize = 16;
-    this.textDecoration = "none";
-    // Define render logic ...
-  };
-  let text = new FizzyText();
+
   let gui = new dat.GUI();
-  let div = document.querySelector("#some");
-  let controllerText = gui.add(text, "message");
-  let controllerOpacity = gui.add(text, "opacity", 0, 1);
-  let controllerColor = gui.addColor(text, "color0");
-  let controllerBackground = gui.addColor(text, "color1");
-  let controllerDisplay = gui.add(text, "display");
-  gui.add(text, "explode");    
-   
-   //Renderer
+  gui.add(settings, "rotationX").min(-0.2).max(0.2).step(0.001);
+  gui.add(settings, "rotationY").min(-0.2).max(0.2).step(0.001);
+  gui.add(settings, "rotationZ").min(-0.2).max(0.2).step(0.001);
+
+  // Define render logic
+  //Renderer
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -97,6 +79,7 @@ function init() {
 function animate() {
   requestAnimationFrame(animate);
   car.rotation.z += 0.005;
+  car.rotation.x = 4.8;
   renderer.render(scene, camera);
 }
 
