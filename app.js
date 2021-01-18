@@ -55,6 +55,9 @@ function init() {
     rotationZ: 0.0001,
     color: 0xff00ff,
     lightPower: 5,
+    bodyred: 0.2,
+    bodygreen: 0.2,
+    bodyblue: 0.2,
   };
   //Сам dat GUI
 
@@ -62,6 +65,9 @@ function init() {
   gui.add(settings, "rotationX").min(-1.5).max(1.5).step(0.001);
   gui.add(settings, "rotationY").min(-0.2).max(0.2).step(0.001);
   gui.add(settings, "rotationZ").min(-0.03).max(0.03).step(0.001);
+  gui.add(settings, "bodyred").min(0).max(0.7).step(0.005);
+  gui.add(settings, "bodygreen").min(0).max(0.7).step(0.005);
+  gui.add(settings, "bodyblue").min(0).max(0.7).step(0.005);
   // gui.add(settings, "lightPower").min(0).max(10).step(0.5); - найти динамическое изменение света на модели
   gui.addColor(settings, "color");
 
@@ -76,7 +82,9 @@ function init() {
     car.rotation.x = settings.rotationX;
     car.rotation.y = settings.rotationY;
     car.rotation.z += settings.rotationZ;
-
+    car.parent.children[0].children[0].children[0].children[1].material.color.r = settings.bodyred;
+    car.parent.children[0].children[0].children[0].children[1].material.color.g = settings.bodygreen;
+    car.parent.children[0].children[0].children[0].children[1].material.color.b = settings.bodyblue;
     // car.material.color.set = settings.color;
     // material.needsUpdate = true;
 
@@ -97,7 +105,7 @@ function init() {
     //  console.log(car.material.color.r);
     //  car.material.color = {r: 0, g:255, b:255};
     //  console.log(car.material.color.r);
-    console.log(car.baseColor);
+    console.log(car.parent.children[0].children[0].children[0].children[1].material.color.r);
     // console.log(car.traverse);
     animate(); // функция запускает анимацию
   });
