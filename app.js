@@ -49,9 +49,10 @@ function init() {
 
   //НАСТРОЙКИ ДЛЯ ДАТ ГУИ
   let settings = {
-    rotationX: 0,
+    rotationX: -1.4,
     rotationY: 0,
-    rotationZ: 0,
+    rotationZ: 0.001,
+    color: 0xff00ff,
   };
   //Сам dat GUI
 
@@ -59,6 +60,7 @@ function init() {
   gui.add(settings, "rotationX").min(-1.5).max(1.5).step(0.001);
   gui.add(settings, "rotationY").min(-0.2).max(0.2).step(0.001);
   gui.add(settings, "rotationZ").min(-0.03).max(0.03).step(0.001);
+  gui.addColor(settings, "color");
 
   // ДЕЛАЕМ РЕНДЕР
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -69,8 +71,13 @@ function init() {
 
   function animate() {
     car.rotation.x = settings.rotationX;
-    car.rotation.y = settings.rotationY;    
-    car.rotation.z += settings.rotationZ; // сюда передавать с dat GUI нужно (?) = settings.rotationZ не работает
+    car.rotation.y = settings.rotationY;
+    car.rotation.z += settings.rotationZ;
+
+    car.material.color = settings.color;
+    material.needsUpdate = true;
+    car.material.color = settings.color;
+
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
   }
@@ -80,10 +87,10 @@ function init() {
   loader.load("./mazda_rx8/scene.gltf", function (gltf) {
     scene.add(gltf.scene);
     car = gltf.scene.children[0];
+    console.log(car.isMesh);
     animate(); // функция запускает анимацию
   });
 }
-
 
 init(); // запускаем всю сцену
 
