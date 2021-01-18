@@ -1,4 +1,4 @@
-//Variables for setup
+//Основные переменные
 
 let container;
 let camera;
@@ -6,6 +6,7 @@ let renderer;
 let scene;
 let car;
 
+// - РАЗОБРАТЬСЯ, КАК РАБОТАЕТ ЭТА ШТУКА - //
 // let clock = new THREE.Clock();
 // let angle = 0; // текущий угол
 // let angularSpeed = THREE.Math.degToRad(20); // угловая скорость - градусов в секунду
@@ -27,7 +28,7 @@ let car;
 function init() {
   container = document.querySelector(".scene");
 
-  //Create scene
+  //ДЕЛАЕМ СЦЕНУ
   scene = new THREE.Scene();
 
   const fov = 40;
@@ -35,7 +36,7 @@ function init() {
   const near = 0.1;
   const far = 1000;
 
-  //Camera setup
+  //ДЕЛАЕМ КАМЕРУ
   camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   camera.position.set(0, 50, 600);
 
@@ -46,44 +47,44 @@ function init() {
   light.position.set(50, 50, 100);
   scene.add(light);
 
+  //НАСТРОЙКИ ДЛЯ ДАТ ГУИ
   let settings = {
     rotationY: 0,
     rotationX: 0,
     rotationZ: 0,
   };
-
-  //dat GUI
+  //Сам dat GUI
 
   let gui = new dat.GUI();
   gui.add(settings, "rotationX").min(-0.2).max(0.2).step(0.001);
   gui.add(settings, "rotationY").min(-0.2).max(0.2).step(0.001);
   gui.add(settings, "rotationZ").min(-0.2).max(0.2).step(0.001);
 
-  // Define render logic
-  //Renderer
+  
+  // ДЕЛАЕМ РЕНДЕР
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
 
   container.appendChild(renderer.domElement);
 
-  //Load Model
+  //ЗАГРУЗЧИК МОДЕЛИ 
   let loader = new THREE.GLTFLoader();
   loader.load("./mazda_rx8/scene.gltf", function (gltf) {
     scene.add(gltf.scene);
     car = gltf.scene.children[0];
-    animate();
+    animate(); // функция запускает анимацию
   });
 }
 
 function animate() {
   requestAnimationFrame(animate);
-  car.rotation.z += 0.005;
+  car.rotation.z += 0.002; // сюда передавать с dat GUI нужно (?) = settings.rotationZ не работает
   car.rotation.x = 4.8;
   renderer.render(scene, camera);
 }
 
-init();
+init(); // запускаем всю сцену
 
 function onWindowResize() {
   camera.aspect = container.clientWidth / container.clientHeight;
