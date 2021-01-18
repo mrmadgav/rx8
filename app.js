@@ -58,7 +58,7 @@ function init() {
   let gui = new dat.GUI();
   gui.add(settings, "rotationX").min(-1.5).max(1.5).step(0.001);
   gui.add(settings, "rotationY").min(-0.2).max(0.2).step(0.001);
-  gui.add(settings, "rotationZ").min(-0.2).max(0.2).step(0.001);
+  gui.add(settings, "rotationZ").min(-0.03).max(0.03).step(0.001);
 
   // ДЕЛАЕМ РЕНДЕР
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -68,8 +68,9 @@ function init() {
   container.appendChild(renderer.domElement);
 
   function animate() {
-    car.rotation.z += settings.rotationZ; // сюда передавать с dat GUI нужно (?) = settings.rotationZ не работает
     car.rotation.x = settings.rotationX;
+    car.rotation.y = settings.rotationY;    
+    car.rotation.z += settings.rotationZ; // сюда передавать с dat GUI нужно (?) = settings.rotationZ не работает
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
   }
