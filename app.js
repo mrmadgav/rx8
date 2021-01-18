@@ -52,7 +52,7 @@ function init() {
   let settings = {
     rotationX: -1.4,
     rotationY: 0,
-    rotationZ: 0.0001,
+    rotationZ: 0.001,
     color: 0xff00ff,
     lightPower: 5,
     bodyred: 0.2,
@@ -65,11 +65,12 @@ function init() {
   gui.add(settings, "rotationX").min(-1.5).max(1.5).step(0.001);
   gui.add(settings, "rotationY").min(-0.2).max(0.2).step(0.001);
   gui.add(settings, "rotationZ").min(-0.03).max(0.03).step(0.001);
-  gui.add(settings, "bodyred").min(0).max(0.7).step(0.005);
-  gui.add(settings, "bodygreen").min(0).max(0.7).step(0.005);
-  gui.add(settings, "bodyblue").min(0).max(0.7).step(0.005);
+  let guiBodyColors = gui.addFolder("Choose Body Color");
+  guiBodyColors.add(settings, "bodyred").min(0).max(0.7).step(0.005);
+  guiBodyColors.add(settings, "bodygreen").min(0).max(0.7).step(0.005);
+  guiBodyColors.add(settings, "bodyblue").min(0).max(0.7).step(0.005);
+  guiBodyColors.open();
   // gui.add(settings, "lightPower").min(0).max(10).step(0.5); - найти динамическое изменение света на модели
-  gui.addColor(settings, "color");
 
   // ДЕЛАЕМ РЕНДЕР
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -82,11 +83,12 @@ function init() {
     car.rotation.x = settings.rotationX;
     car.rotation.y = settings.rotationY;
     car.rotation.z += settings.rotationZ;
-    car.parent.children[0].children[0].children[0].children[1].material.color.r = settings.bodyred;
-    car.parent.children[0].children[0].children[0].children[1].material.color.g = settings.bodygreen;
-    car.parent.children[0].children[0].children[0].children[1].material.color.b = settings.bodyblue;
-    // car.material.color.set = settings.color;
-    // material.needsUpdate = true;
+    car.parent.children[0].children[0].children[0].children[1].material.color.r =
+      settings.bodyred;
+    car.parent.children[0].children[0].children[0].children[1].material.color.g =
+      settings.bodygreen;
+    car.parent.children[0].children[0].children[0].children[1].material.color.b =
+      settings.bodyblue;
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
@@ -97,16 +99,6 @@ function init() {
   loader.load("./mazda_rx8/scene.gltf", function (gltf) {
     scene.add(gltf.scene);
     car = gltf.scene.children[0];
-    // gltf.scene.traverse((car) => {
-    //   if (car.isMesh) car.material = newMaterial;
-    // });
-    //   car.material = new THREE.MeshLambertMaterial(
-    //     {color: Math.random() * 0xffffff });
-    //  console.log(car.material.color.r);
-    //  car.material.color = {r: 0, g:255, b:255};
-    //  console.log(car.material.color.r);
-    console.log(car.parent.children[0].children[0].children[0].children[1].material.color.r);
-    // console.log(car.traverse);
     animate(); // функция запускает анимацию
   });
 }
