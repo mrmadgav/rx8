@@ -49,18 +49,17 @@ function init() {
 
   //НАСТРОЙКИ ДЛЯ ДАТ ГУИ
   let settings = {
-    rotationY: 0,
     rotationX: 0,
+    rotationY: 0,
     rotationZ: 0,
   };
   //Сам dat GUI
 
   let gui = new dat.GUI();
-  gui.add(settings, "rotationX").min(-0.2).max(0.2).step(0.001);
+  gui.add(settings, "rotationX").min(-1.5).max(1.5).step(0.001);
   gui.add(settings, "rotationY").min(-0.2).max(0.2).step(0.001);
   gui.add(settings, "rotationZ").min(-0.2).max(0.2).step(0.001);
 
-  
   // ДЕЛАЕМ РЕНДЕР
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(container.clientWidth, container.clientHeight);
@@ -68,7 +67,14 @@ function init() {
 
   container.appendChild(renderer.domElement);
 
-  //ЗАГРУЗЧИК МОДЕЛИ 
+  function animate() {
+    car.rotation.z += settings.rotationZ; // сюда передавать с dat GUI нужно (?) = settings.rotationZ не работает
+    car.rotation.x = settings.rotationX;
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
+
+  //ЗАГРУЗЧИК МОДЕЛИ
   let loader = new THREE.GLTFLoader();
   loader.load("./mazda_rx8/scene.gltf", function (gltf) {
     scene.add(gltf.scene);
@@ -77,12 +83,6 @@ function init() {
   });
 }
 
-function animate() {
-  requestAnimationFrame(animate);
-  car.rotation.z += 0.002; // сюда передавать с dat GUI нужно (?) = settings.rotationZ не работает
-  car.rotation.x = 4.8;
-  renderer.render(scene, camera);
-}
 
 init(); // запускаем всю сцену
 
