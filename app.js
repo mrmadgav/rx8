@@ -5,6 +5,7 @@ let camera;
 let renderer;
 let scene;
 let car;
+let newMaterial = "red"
 
 // - РАЗОБРАТЬСЯ, КАК РАБОТАЕТ ЭТА ШТУКА - //
 // let clock = new THREE.Clock();
@@ -51,7 +52,7 @@ function init() {
   let settings = {
     rotationX: -1.4,
     rotationY: 0,
-    rotationZ: 0.001,
+    rotationZ: 0.0001,
     color: 0xff00ff,
   };
   //Сам dat GUI
@@ -73,10 +74,9 @@ function init() {
     car.rotation.x = settings.rotationX;
     car.rotation.y = settings.rotationY;
     car.rotation.z += settings.rotationZ;
-
-    car.material.color = settings.color;
-    material.needsUpdate = true;
-    car.material.color = settings.color;
+   
+    // car.material.color.set = settings.color;
+    // material.needsUpdate = true;
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
@@ -87,7 +87,16 @@ function init() {
   loader.load("./mazda_rx8/scene.gltf", function (gltf) {
     scene.add(gltf.scene);
     car = gltf.scene.children[0];
-    console.log(car.isMesh);
+    // gltf.scene.traverse((car) => {
+    //   if (car.isMesh) car.material = newMaterial;
+    // });
+  //   car.material = new THREE.MeshLambertMaterial(
+  //     {color: Math.random() * 0xffffff });
+  //  console.log(car.material.color.r);
+  //  car.material.color = {r: 0, g:255, b:255};
+  //  console.log(car.material.color.r);
+  console.log(car.meshes);
+      // console.log(car.traverse);
     animate(); // функция запускает анимацию
   });
 }
