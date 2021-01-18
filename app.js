@@ -97,7 +97,7 @@ function init() {
     //  console.log(car.material.color.r);
     //  car.material.color = {r: 0, g:255, b:255};
     //  console.log(car.material.color.r);
-    console.log(car.meshes);
+    console.log(car.baseColor);
     // console.log(car.traverse);
     animate(); // функция запускает анимацию
   });
