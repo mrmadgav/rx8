@@ -35,7 +35,7 @@ function init() {
   const fov = 40;
   const aspect = container.clientWidth / container.clientHeight;
   const near = 0.1;
-  const far = 1000;
+  const far = 2000;
 
   //ДЕЛАЕМ КАМЕРУ
   camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
@@ -129,8 +129,7 @@ function init() {
       gui.close();
 
       let ground = new THREE.PlaneGeometry(500, 500);
-
-      let material = new THREE.MeshNormalMaterial();
+      let material = new THREE.MeshNormalMaterial((wireframe = true));
 
       meshGround = new THREE.Mesh(ground, material);
 
@@ -140,12 +139,36 @@ function init() {
       scene.add(gridHelper);
       let axesHelper = new THREE.AxesHelper(500);
       scene.add(axesHelper);
-
       car.rotation.x = -1.57;
 
-      // dVector = new THREE.Vector3(0, 0, 0);
-      // camera.lookAt(dVector);
+      //отлавливает нажатие клавиши управления
+      document.querySelector("body").addEventListener("keydown", logKey);
 
+      function logKey(e) {
+        console.log(`${e.code}`);
+        // return e.code;
+        // W move
+        if (e.code === "KeyW") {
+          console.log("pressed W");
+          camera.position.x += Math.sin(camera.rotation.y)/100;
+          camera.position.z -= Math.cos(camera.rotation.y)/100;
+        }
+
+        // S move
+        if (e.code === "KeyS") {
+          camera.position.x += Math.sin(camera.rotation.y)/100;
+          camera.position.z += Math.cos(camera.rotation.y)/100;
+        }
+        // A move Turn Left
+        if (e.code === "KeyA") {
+          camera.rotation.y -= Math.PI * 0.0001;
+        }
+        if (e.code === "KeyD") {
+          camera.rotation.y += Math.PI * 0.0001;
+        }
+        // dVector = new THREE.Vector3(0, 0, 0);
+        // camera.lookAt(dVector);
+      }
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
     }
