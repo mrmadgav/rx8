@@ -1,3 +1,4 @@
+// import {OrbitControls} from "./libs/three.min.js";
 //Основные переменные
 
 let container;
@@ -5,7 +6,6 @@ let camera;
 let renderer;
 let scene;
 let car;
-let newMaterial = "red";
 
 // - РАЗОБРАТЬСЯ, КАК РАБОТАЕТ ЭТА ШТУКА - //
 // let clock = new THREE.Clock();
@@ -48,12 +48,14 @@ function init() {
   light.position.set(50, 50, 100);
   scene.add(light);
 
+
+
   //НАСТРОЙКИ ДЛЯ ДАТ ГУИ
   let settings = {
     // ключи поворота модели
     rotationX: -1.4,
     rotationY: 0,
-    rotationZ: 0.001,
+    rotationZ: 0.0,
     // color: 0xff00ff,
     // lightPower: 5,
     // ключи цвета кузова
@@ -99,29 +101,39 @@ function init() {
     car.rotation.y = settings.rotationY;
     car.rotation.z += settings.rotationZ;
     // цвет кузова
-    car.parent.children[0].children[0].children[0].children[0].material.color.r =
-      settings.bodyRed;
-    car.parent.children[0].children[0].children[0].children[0].material.color.g =
-      settings.bodyGreen;
-    car.parent.children[0].children[0].children[0].children[0].material.color.b =
-      settings.bodyBlue;
-      // цвет дисков
-      car.parent.children[0].children[0].children[0].children[11].material.color.r = settings.rimsRed
-      car.parent.children[0].children[0].children[0].children[11].material.color.g = settings.rimsGreen
-      car.parent.children[0].children[0].children[0].children[11].material.color.b = settings.rimsBlue
-      // car.parent.children[0].children[0].children[0].children[21].material.color.r = 2 - тонировка стекла
-  // car.children[0].children[0].children[18].geometry.boundingSphere.radius = 320.00013; - не работает функция
+    let bodyIDcolor =
+      car.parent.children[0].children[0].children[0].children[0].material.color;
+    bodyIDcolor.r = settings.bodyRed;
+    bodyIDcolor.g = settings.bodyGreen;
+    bodyIDcolor.b = settings.bodyBlue;
+    // цвет дисков
+    let rimIDcolor =
+      car.parent.children[0].children[0].children[0].children[11].material
+        .color;
+    rimIDcolor.r = settings.rimsRed;
+    rimIDcolor.g = settings.rimsGreen;
+    rimIDcolor.b = settings.rimsBlue;
+    // car.parent.children[0].children[0].children[0].children[21].material.color.r = 2 - тонировка стекла
+    // car.children[0].children[0].children[18].geometry.boundingSphere.radius = 320.00013; - не работает функция
+    car.position.x = 0;
+
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
   }
 
+    // Orbit Controls
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
   //ЗАГРУЗЧИК МОДЕЛИ
   let loader = new THREE.GLTFLoader();
   loader.load("./mazda_rx8/sceneUpdated.gltf", function (gltf) {
     scene.add(gltf.scene);
     car = gltf.scene.children[0];
     // console.log(car.children[0].children[0].children[19].geometry.boundingSphere.radius); попытка достучаться до радиуса колеса
-    console.log(car.parent.children[0].children[0].children[0].children[11].material);
+    console.log(
+      car.parent.children[0].children[0].children[0].children[11].material
+    );
+
+    controls.update();
     animate(); // функция запускает анимацию
   });
 }
