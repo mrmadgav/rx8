@@ -48,8 +48,6 @@ function init() {
   light.position.set(50, 50, 100);
   scene.add(light);
 
-
-
   //НАСТРОЙКИ ДЛЯ ДАТ ГУИ
   let settings = {
     // ключи поворота модели
@@ -95,42 +93,91 @@ function init() {
 
   container.appendChild(renderer.domElement);
 
+  // кнопка переключения анимации
+  let drive = document.querySelector("button");
+  drive.dataset.status = "OnStyle";
+  // console.log(drive.dataset.status === 'OnStyle');
+
   function animate() {
-    // поворот модели
-    car.rotation.x = settings.rotationX;
-    car.rotation.y = settings.rotationY;
-    car.rotation.z += settings.rotationZ;
-    // цвет кузова
-    let bodyIDcolor =
-      car.parent.children[0].children[0].children[0].children[0].material.color;
-    bodyIDcolor.r = settings.bodyRed;
-    bodyIDcolor.g = settings.bodyGreen;
-    bodyIDcolor.b = settings.bodyBlue;
-    // цвет дисков
-    let rimIDcolor =
-      car.parent.children[0].children[0].children[0].children[11].material
-        .color;
-    rimIDcolor.r = settings.rimsRed;
-    rimIDcolor.g = settings.rimsGreen;
-    rimIDcolor.b = settings.rimsBlue;
-    // car.parent.children[0].children[0].children[0].children[21].material.color.r = 2 - тонировка стекла
-    // car.children[0].children[0].children[18].geometry.boundingSphere.radius = 320.00013; - не работает функция
-    
-    renderer.render(scene, camera);
-    requestAnimationFrame(animate);
+    // если кнопка Drive не нажата, то анимируем объект в режиме стилизации
+    if (drive.dataset.status === "OnStyle") {
+      // поворот модели
+      car.rotation.x = settings.rotationX;
+      car.rotation.y = settings.rotationY;
+      car.rotation.z += settings.rotationZ;
+      // цвет кузова
+      let bodyIDcolor =
+        car.parent.children[0].children[0].children[0].children[0].material
+          .color;
+      bodyIDcolor.r = settings.bodyRed;
+      bodyIDcolor.g = settings.bodyGreen;
+      bodyIDcolor.b = settings.bodyBlue;
+      // цвет дисков
+      let rimIDcolor =
+        car.parent.children[0].children[0].children[0].children[11].material
+          .color;
+      rimIDcolor.r = settings.rimsRed;
+      rimIDcolor.g = settings.rimsGreen;
+      rimIDcolor.b = settings.rimsBlue;
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    // по нажатию кнопки объект с выбранными настройками цвета и т.д должен получить возможность ехать в режиме "Chase Cam" по небольшому треку или типа того. По нажатию "esс" - возврат в режим стилизации
+    if (drive.dataset.status === "OnDrive") {
+      document.body.style.background = "none";
+      gui.close();
+      car.rotation.x = -1.5;
+      car.rotationZ = 50;
+      let ground = new THREE.BoxBufferGeometry(500, 2, 500);
+      // let ground = new THREE.PlaneGeometry(500, 500); - создает вертикальную плоскость, а надо горизонтальную (?) Как найти/сделать горизонт при этом тоже неясно
+      let material = new THREE.MeshNormalMaterial();
+
+      mesh = new THREE.Mesh(ground, material);
+      mesh.add(camera);
+      scene.add(mesh);
+
+      let gridHelper = new THREE.GridHelper(800, 50);
+      scene.add(gridHelper);
+      let axesHelper = new THREE.AxesHelper(500);
+      scene.add(axesHelper);
+
+      camera.position.z = 800;
+      car.positionX += 50; // не работает
+      car.rotationX = -1.5; // не работает
+      dVector = new THREE.Vector3(0, 0, 0);
+      camera.lookAt(dVector);
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+      // console.log(mesh);
+    }
   }
 
-    // Orbit Controls
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  // Orbit Controls
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
   //ЗАГРУЗЧИК МОДЕЛИ
   let loader = new THREE.GLTFLoader();
   loader.load("./mazda_rx8/sceneUpdated.gltf", function (gltf) {
     scene.add(gltf.scene);
     car = gltf.scene.children[0];
     // console.log(car.children[0].children[0].children[19].geometry.boundingSphere.radius); попытка достучаться до радиуса колеса
-    console.log(
-      car.parent.children[0].children[0].children[0].children[11].material
-    );
+    // console.log(car.parent.children[0].children[0].children[0].children[11].material);
+
+    // Функция, включающая камеру от первого лица и возможность ездить на авто
+
+    let makeDrive = () => {
+      drive.dataset.status = "OnDrive";
+
+      // camera.position.set(0, 50, 800);
+      // car.rotationZ = 180; - НИХУЯ НЕ РАБОТАЕТ ЭТА ШТУКА
+      // animate();
+      // renderer.render(scene, camera);
+      // requestAnimationFrame(animate);
+    };
+    drive.addEventListener("click", makeDrive);
+
+    // -------- //
 
     controls.update();
     animate(); // функция запускает анимацию
