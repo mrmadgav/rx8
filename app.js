@@ -115,8 +115,7 @@ function init() {
     rimIDcolor.b = settings.rimsBlue;
     // car.parent.children[0].children[0].children[0].children[21].material.color.r = 2 - тонировка стекла
     // car.children[0].children[0].children[18].geometry.boundingSphere.radius = 320.00013; - не работает функция
-    car.position.x = 0;
-
+    
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
   }
