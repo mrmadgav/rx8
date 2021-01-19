@@ -127,30 +127,27 @@ function init() {
     if (drive.dataset.status === "OnDrive") {
       document.body.style.background = "none";
       gui.close();
-      car.rotation.x = -1.5;
-      car.rotationZ = 50;
-      let ground = new THREE.BoxBufferGeometry(500, 2, 500);
-      // let ground = new THREE.PlaneGeometry(500, 500); - создает вертикальную плоскость, а надо горизонтальную (?) Как найти/сделать горизонт при этом тоже неясно
+
+      let ground = new THREE.PlaneGeometry(500, 500);
+
       let material = new THREE.MeshNormalMaterial();
 
-      mesh = new THREE.Mesh(ground, material);
-      mesh.add(camera);
-      scene.add(mesh);
+      meshGround = new THREE.Mesh(ground, material);
 
+      scene.add(meshGround);
+      meshGround.rotation.x += Math.PI / 2;
       let gridHelper = new THREE.GridHelper(800, 50);
       scene.add(gridHelper);
       let axesHelper = new THREE.AxesHelper(500);
       scene.add(axesHelper);
 
-      camera.position.z = 800;
-      car.positionX += 50; // не работает
-      car.rotationX = -1.5; // не работает
-      dVector = new THREE.Vector3(0, 0, 0);
-      camera.lookAt(dVector);
+      car.rotation.x = -1.57;
+
+      // dVector = new THREE.Vector3(0, 0, 0);
+      // camera.lookAt(dVector);
 
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
-      // console.log(mesh);
     }
   }
 
@@ -168,12 +165,6 @@ function init() {
 
     let makeDrive = () => {
       drive.dataset.status = "OnDrive";
-
-      // camera.position.set(0, 50, 800);
-      // car.rotationZ = 180; - НИХУЯ НЕ РАБОТАЕТ ЭТА ШТУКА
-      // animate();
-      // renderer.render(scene, camera);
-      // requestAnimationFrame(animate);
     };
     drive.addEventListener("click", makeDrive);
 
