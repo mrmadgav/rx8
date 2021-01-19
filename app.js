@@ -50,26 +50,40 @@ function init() {
 
   //НАСТРОЙКИ ДЛЯ ДАТ ГУИ
   let settings = {
+    // ключи поворота модели
     rotationX: -1.4,
     rotationY: 0,
     rotationZ: 0.001,
-    color: 0xff00ff,
-    lightPower: 5,
-    bodyred: 0.2,
-    bodygreen: 0.2,
-    bodyblue: 0.2,
+    // color: 0xff00ff,
+    // lightPower: 5,
+    // ключи цвета кузова
+    bodyRed: 0.2,
+    bodyGreen: 0.2,
+    bodyBlue: 0.2,
+    // ключи цвета дисков
+    rimsRed: 0.2,
+    rimsGreen: 0.2,
+    rimsBlue: 0.2,
   };
   //Сам dat GUI
 
   let gui = new dat.GUI();
+  // создаем ползунки вращения авто
   gui.add(settings, "rotationX").min(-1.5).max(1.5).step(0.001);
   gui.add(settings, "rotationY").min(-0.2).max(0.2).step(0.001);
   gui.add(settings, "rotationZ").min(-0.03).max(0.03).step(0.001);
+  // папка с настроками цвета авто
   let guiBodyColors = gui.addFolder("Choose Body Color");
-  guiBodyColors.add(settings, "bodyred").min(0).max(0.7).step(0.005);
-  guiBodyColors.add(settings, "bodygreen").min(0).max(0.7).step(0.005);
-  guiBodyColors.add(settings, "bodyblue").min(0).max(0.7).step(0.005);
+  guiBodyColors.add(settings, "bodyRed").min(0).max(0.7).step(0.005);
+  guiBodyColors.add(settings, "bodyGreen").min(0).max(0.7).step(0.005);
+  guiBodyColors.add(settings, "bodyBlue").min(0).max(0.7).step(0.005);
   guiBodyColors.open();
+  //папка с настройками цвета дисков
+  let guiRimsColors = gui.addFolder("Choose Rims Color");
+  guiRimsColors.add(settings, "rimsRed").min(0).max(0.7).step(0.005);
+  guiRimsColors.add(settings, "rimsGreen").min(0).max(0.7).step(0.005);
+  guiRimsColors.add(settings, "rimsBlue").min(0).max(0.7).step(0.005);
+  guiRimsColors.open();
   // gui.add(settings, "lightPower").min(0).max(10).step(0.5); - найти динамическое изменение света на модели
 
   // ДЕЛАЕМ РЕНДЕР
@@ -80,25 +94,34 @@ function init() {
   container.appendChild(renderer.domElement);
 
   function animate() {
+    // поворот модели
     car.rotation.x = settings.rotationX;
     car.rotation.y = settings.rotationY;
     car.rotation.z += settings.rotationZ;
-    car.parent.children[0].children[0].children[0].children[1].material.color.r =
-      settings.bodyred;
-    car.parent.children[0].children[0].children[0].children[1].material.color.g =
-      settings.bodygreen;
-    car.parent.children[0].children[0].children[0].children[1].material.color.b =
-      settings.bodyblue;
-
+    // цвет кузова
+    car.parent.children[0].children[0].children[0].children[0].material.color.r =
+      settings.bodyRed;
+    car.parent.children[0].children[0].children[0].children[0].material.color.g =
+      settings.bodyGreen;
+    car.parent.children[0].children[0].children[0].children[0].material.color.b =
+      settings.bodyBlue;
+      // цвет дисков
+      car.parent.children[0].children[0].children[0].children[11].material.color.r = settings.rimsRed
+      car.parent.children[0].children[0].children[0].children[11].material.color.g = settings.rimsGreen
+      car.parent.children[0].children[0].children[0].children[11].material.color.b = settings.rimsBlue
+      // car.parent.children[0].children[0].children[0].children[21].material.color.r = 2 - тонировка стекла
+  // car.children[0].children[0].children[18].geometry.boundingSphere.radius = 320.00013; - не работает функция
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
   }
 
   //ЗАГРУЗЧИК МОДЕЛИ
   let loader = new THREE.GLTFLoader();
-  loader.load("./mazda_rx8/scene.gltf", function (gltf) {
+  loader.load("./mazda_rx8/sceneUpdated.gltf", function (gltf) {
     scene.add(gltf.scene);
     car = gltf.scene.children[0];
+    // console.log(car.children[0].children[0].children[19].geometry.boundingSphere.radius); попытка достучаться до радиуса колеса
+    console.log(car.parent.children[0].children[0].children[0].children[11].material);
     animate(); // функция запускает анимацию
   });
 }
