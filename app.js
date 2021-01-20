@@ -150,7 +150,7 @@ function init() {
         console.log(`${e.code}`);
         // W move
         if (e.code === "KeyW") {
-          console.log("pressed W");
+          // console.log("pressed W");
           camera.position.x -= Math.sin(camera.rotation.y);
           camera.position.z -= -Math.cos(camera.rotation.y);
           car.position.set(
