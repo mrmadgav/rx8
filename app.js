@@ -1,4 +1,3 @@
-// import {OrbitControls} from "./libs/three.min.js";
 //Основные переменные
 
 let container;
@@ -7,24 +6,10 @@ let renderer;
 let scene;
 let car;
 
-// - РАЗОБРАТЬСЯ, КАК РАБОТАЕТ ЭТА ШТУКА - //
-// let clock = new THREE.Clock();
-// let angle = 0; // текущий угол
-// let angularSpeed = THREE.Math.degToRad(20); // угловая скорость - градусов в секунду
-// let delta = 0;
-// let radius = 20;
-// function animate() {
-//   delta = clock.getDelta(); // getDelta() - возвращает интервал в долях секунды
-//   requestAnimationFrame(animate);
-
-//   camera.position.x = Math.cos(angle) * radius;
-//   camera.position.z = Math.sin(angle) * radius;
-//   angle += angularSpeed * delta; // приращение угла
-
-//   camera.lookAt(mesh.position);
-
-//   renderer.render(scene, camera);
-// }
+// кнопка переключения анимации
+let drive = document.querySelector("button");
+drive.dataset.status = "OnStyle";
+// console.log(drive.dataset.status === 'OnStyle');
 
 function init() {
   container = document.querySelector(".scene");
@@ -32,10 +17,10 @@ function init() {
   //ДЕЛАЕМ СЦЕНУ
   scene = new THREE.Scene();
 
-  const fov = 40;
-  const aspect = container.clientWidth / container.clientHeight;
-  const near = 0.1;
-  const far = 2000;
+  let fov = 40;
+  let aspect = container.clientWidth / container.clientHeight;
+  let near = 0.1;
+  let far = 2000;
 
   //ДЕЛАЕМ КАМЕРУ
   camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
@@ -93,11 +78,6 @@ function init() {
 
   container.appendChild(renderer.domElement);
 
-  // кнопка переключения анимации
-  let drive = document.querySelector("button");
-  drive.dataset.status = "OnStyle";
-  // console.log(drive.dataset.status === 'OnStyle');
-
   function animate() {
     // если кнопка Drive не нажата, то анимируем объект в режиме стилизации
     if (drive.dataset.status === "OnStyle") {
@@ -127,7 +107,9 @@ function init() {
     if (drive.dataset.status === "OnDrive") {
       document.body.style.background = "none";
       gui.close();
-
+      // console.log(camera);
+      // camera.fov = 90;
+      // camera.updateProjectionMatrix; - не работает
       let ground = new THREE.PlaneGeometry(500, 500);
       let material = new THREE.MeshNormalMaterial((wireframe = true));
 
@@ -141,70 +123,12 @@ function init() {
       scene.add(axesHelper);
 
       car.rotation.x = -1.57;
-      // let carSets = { turnSpeed: Math.PI * 0.02, accSpeed: 0 }; - настройки будущего движущегося объекта car
-      //отлавливает нажатие клавиши управления
-      document.querySelector("body").addEventListener("keydown", logKey);
+      car.position.x = 0;
+      car.position.y = 0;
+      car.position.z = 0;
+      car.rotation.z = Math.PI;
 
-      // эта функция возвращает множество нажатий клавиши в текущем формате кода, хотя сама по себе работает правильно
-      function logKey(e) {
-        console.log(`${e.code}`);
-        // W move
-        if (e.code === "KeyW") {
-          // console.log("pressed W");
-          camera.position.x -= Math.sin(camera.rotation.y);
-          camera.position.z -= -Math.cos(camera.rotation.y);
-          car.position.set(
-            camera.position.x + Math.sin(camera.rotation.y) * 0,
-            6,
-            camera.position.y - 0.5,
-            camera.position.z + Math.cos(camera.rotation.y) * 0.6
-          );
-        }
-        // S move
-        if (e.code === "KeyS") {
-          camera.position.x += Math.sin(camera.rotation.y);
-          camera.position.z += -Math.cos(camera.rotation.y);
-          car.position.set(
-            camera.position.x - Math.sin(camera.rotation.y) * 0,
-            6,
-            camera.position.y - 0.5,
-            camera.position.z + Math.cos(camera.rotation.y) * 0.6
-          );
-        }
-        // A move Turn Left
-        if (e.code === "KeyA") {
-          camera.position.x += Math.sin(camera.rotation.y + Math.PI / 2);
-          camera.position.z += -Math.cos(camera.rotation.y + Math.PI / 2);
-          // car.rotation.set( - авто переворачивается
-          //   camera.rotation.x,
-          //   camera.rotation.y - Math.PI,
-          //   camera.rotation.z
-          // );
-        }
-        if (e.code === "KeyD") {
-          camera.position.x += Math.sin(camera.rotation.y - Math.PI / 2);
-          camera.position.z += -Math.cos(camera.rotation.y - Math.PI / 2);
-          // car.rotation.set(
-          //   camera.rotation.x,
-          //   camera.rotation.y - Math.PI,
-          //   camera.rotation.z
-          // );
-        }
-        // вид от первого лица
-        // car.position.set(
-        //   camera.position.x - Math.sin(camera.rotation.y) * 0,
-        //   6,
-        //   camera.position.y - 0.5,
-        //   camera.position.z + Math.cos(camera.rotation.y) * 0.6
-        // );
-        // car.rotation.set(
-        //   camera.rotation.x,
-        //   camera.rotation.y - Math.PI,
-        //   camera.rotation.z
-        // );
-        // dVector = new THREE.Vector3(0, 0, 0);
-        // camera.lookAt(dVector);
-      }
+      // logKey();
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
     }
@@ -233,7 +157,58 @@ function init() {
     animate(); // функция запускает анимацию
   });
 }
+//отлавливает нажатие клавиши управления
+document.querySelector("body").addEventListener("keydown", logKey);
 
+// эта функция возвращает множество нажатий клавиши в текущем формате кода, хотя сама по себе работает правильно
+function logKey(e) {
+  console.log(`${e.code}`);
+  // W move
+  if (e.code === "KeyW") {
+    // console.log("pressed W");
+    camera.position.x -= Math.sin(camera.rotation.y);
+    camera.position.z -= -Math.cos(camera.rotation.y);
+    car.position.set(
+      camera.position.x + Math.sin(camera.rotation.y) * 0,
+      6,
+      camera.position.y - 0.5,
+      camera.position.z + Math.cos(camera.rotation.y) * 0.6
+    );
+  }
+  // S move
+  if (e.code === "KeyS") {
+    camera.position.x += Math.sin(camera.rotation.y);
+    camera.position.z += -Math.cos(camera.rotation.y);
+    car.position.set(
+      camera.position.x - Math.sin(camera.rotation.y) * 0,
+      6,
+      camera.position.y - 0.5,
+      camera.position.z + Math.cos(camera.rotation.y) * 0.6
+    );
+  }
+  // A move Turn Left
+  if (e.code === "KeyA") {
+    camera.position.x += Math.sin(camera.rotation.y + Math.PI / 2);
+    camera.position.z += -Math.cos(camera.rotation.y + Math.PI / 2);
+    // car.rotation.set( - авто переворачивается
+    //   camera.rotation.x,
+    //   camera.rotation.y - Math.PI,
+    //   camera.rotation.z
+    // );
+  }
+  if (e.code === "KeyD") {
+    camera.position.x += Math.sin(camera.rotation.y - Math.PI / 2);
+    camera.position.z += -Math.cos(camera.rotation.y - Math.PI / 2);
+    // car.rotation.set(
+    //   camera.rotation.x,
+    //   camera.rotation.y - Math.PI,
+    //   camera.rotation.z
+    // );
+  }
+
+  // dVector = new THREE.Vector3(0, 0, 0);
+  // camera.lookAt(dVector);
+}
 init(); // запускаем всю сцену
 
 function onWindowResize() {
@@ -244,3 +219,35 @@ function onWindowResize() {
 }
 
 window.addEventListener("resize", onWindowResize);
+
+// вид от первого лица
+// car.position.set(
+//   camera.position.x - Math.sin(camera.rotation.y) * 0,
+//   6,
+//   camera.position.y - 0.5,
+//   camera.position.z + Math.cos(camera.rotation.y) * 0.6
+// );
+// car.rotation.set(
+//   camera.rotation.x,
+//   camera.rotation.y - Math.PI,
+//   camera.rotation.z
+// );
+
+// - РАЗОБРАТЬСЯ, КАК РАБОТАЕТ ЭТА ШТУКА - //
+// let clock = new THREE.Clock();
+// let angle = 0; // текущий угол
+// let angularSpeed = THREE.Math.degToRad(20); // угловая скорость - градусов в секунду
+// let delta = 0;
+// let radius = 20;
+// function animate() {
+//   delta = clock.getDelta(); // getDelta() - возвращает интервал в долях секунды
+//   requestAnimationFrame(animate);
+
+//   camera.position.x = Math.cos(angle) * radius;
+//   camera.position.z = Math.sin(angle) * radius;
+//   angle += angularSpeed * delta; // приращение угла
+
+//   camera.lookAt(mesh.position);
+
+//   renderer.render(scene, camera);
+// }
