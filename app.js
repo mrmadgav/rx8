@@ -139,8 +139,9 @@ function init() {
       scene.add(gridHelper);
       let axesHelper = new THREE.AxesHelper(500);
       scene.add(axesHelper);
-      car.rotation.x = -1.57;
 
+      car.rotation.x = -1.57;
+      // let carSets = { turnSpeed: Math.PI * 0.02, accSpeed: 0 };
       //отлавливает нажатие клавиши управления
       document.querySelector("body").addEventListener("keydown", logKey);
 
@@ -150,22 +151,47 @@ function init() {
         // W move
         if (e.code === "KeyW") {
           console.log("pressed W");
-          camera.position.x += Math.sin(camera.rotation.y)/100;
-          camera.position.z -= Math.cos(camera.rotation.y)/100;
+          camera.position.x -= Math.sin(camera.rotation.y);
+          camera.position.z -= -Math.cos(camera.rotation.y);
+          car.position.set(
+            camera.position.x + Math.sin(camera.rotation.y) * 0,
+            6,
+            camera.position.y - 0.5,
+            camera.position.z + Math.cos(camera.rotation.y) * 0.6
+          );
         }
-
         // S move
         if (e.code === "KeyS") {
-          camera.position.x += Math.sin(camera.rotation.y)/100;
-          camera.position.z += Math.cos(camera.rotation.y)/100;
+          camera.position.x += Math.sin(camera.rotation.y);
+          camera.position.z += -Math.cos(camera.rotation.y);
+          car.position.set(
+            camera.position.x - Math.sin(camera.rotation.y) * 0,
+            6,
+            camera.position.y - 0.5,
+            camera.position.z + Math.cos(camera.rotation.y) * 0.6
+          );
         }
         // A move Turn Left
         if (e.code === "KeyA") {
-          camera.rotation.y -= Math.PI * 0.0001;
+          camera.position.x += Math.sin(camera.rotation.y + Math.PI / 2);
+          camera.position.z += -Math.cos(camera.rotation.y + Math.PI / 2);
         }
         if (e.code === "KeyD") {
-          camera.rotation.y += Math.PI * 0.0001;
+          camera.position.x += Math.sin(camera.rotation.y - Math.PI / 2);
+          camera.position.z += -Math.cos(camera.rotation.y - Math.PI / 2);
         }
+        // вид от первого лица
+        // car.position.set(
+        //   camera.position.x - Math.sin(camera.rotation.y) * 0,
+        //   6,
+        //   camera.position.y - 0.5,
+        //   camera.position.z + Math.cos(camera.rotation.y) * 0.6
+        // );
+        // car.rotation.set(
+        //   camera.rotation.x,
+        //   camera.rotation.y - Math.PI,
+        //   camera.rotation.z
+        // );
         // dVector = new THREE.Vector3(0, 0, 0);
         // camera.lookAt(dVector);
       }
