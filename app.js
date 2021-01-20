@@ -141,13 +141,13 @@ function init() {
       scene.add(axesHelper);
 
       car.rotation.x = -1.57;
-      // let carSets = { turnSpeed: Math.PI * 0.02, accSpeed: 0 };
+      // let carSets = { turnSpeed: Math.PI * 0.02, accSpeed: 0 }; - настройки будущего движущегося объекта car
       //отлавливает нажатие клавиши управления
       document.querySelector("body").addEventListener("keydown", logKey);
 
+      // эта функция возвращает множество нажатий клавиши в текущем формате кода, хотя сама по себе работает правильно
       function logKey(e) {
         console.log(`${e.code}`);
-        // return e.code;
         // W move
         if (e.code === "KeyW") {
           console.log("pressed W");
@@ -175,10 +175,20 @@ function init() {
         if (e.code === "KeyA") {
           camera.position.x += Math.sin(camera.rotation.y + Math.PI / 2);
           camera.position.z += -Math.cos(camera.rotation.y + Math.PI / 2);
+          // car.rotation.set( - авто переворачивается
+          //   camera.rotation.x,
+          //   camera.rotation.y - Math.PI,
+          //   camera.rotation.z
+          // );
         }
         if (e.code === "KeyD") {
           camera.position.x += Math.sin(camera.rotation.y - Math.PI / 2);
           camera.position.z += -Math.cos(camera.rotation.y - Math.PI / 2);
+          // car.rotation.set(
+          //   camera.rotation.x,
+          //   camera.rotation.y - Math.PI,
+          //   camera.rotation.z
+          // );
         }
         // вид от первого лица
         // car.position.set(
@@ -210,7 +220,7 @@ function init() {
     // console.log(car.children[0].children[0].children[19].geometry.boundingSphere.radius); попытка достучаться до радиуса колеса
     // console.log(car.parent.children[0].children[0].children[0].children[11].material);
 
-    // Функция, включающая камеру от первого лица и возможность ездить на авто
+    // Функция, включающая по нажатию на кнопку drive камеру от первого лица и возможность ездить на авто
 
     let makeDrive = () => {
       drive.dataset.status = "OnDrive";
