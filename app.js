@@ -170,20 +170,20 @@ function logKey(e) {
   console.log(`${e.code}`);
   var delta = clock.getDelta(); // seconds.
 
-  var moveDistance = 200 * delta; // 200 pixels per second
+  // var moveDistance = 200 * delta; // 200 pixels per second вынесено внутрь условия if
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
   if (keyboard.pressed("W")) {
-    if (acceleration<=1400) acceleration += 10;
-    console.log(acceleration);
+    if (acceleration <= 1400) acceleration += 10;    
     car.translateY(-acceleration * delta);
-    car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.1;
-    car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.1;
-    car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.1;
-    car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.1;
+    car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.25;
+    console.log(car.parent.children[0].children[0].children[0].children[11].rotation.x);
+    car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.25;
+    car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.25;
+    car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.25;
   }
   console.log(car.position.x, car.position.y, car.position.z);
   if (keyboard.pressed("S")) {
-    if (acceleration<=600) acceleration += 10;
+    if (acceleration <= 600) acceleration += 10;
     console.log(acceleration);
     car.translateY(acceleration * delta);
     car.parent.children[0].children[0].children[0].children[11].rotation.x -= 0.1;
@@ -193,16 +193,13 @@ function logKey(e) {
   }
   // rotate left/right/up/down
 
-  if (keyboard.pressed("A"))
+  if (keyboard.pressed("A") && acceleration > 0)
     car.rotateOnAxis(new THREE.Vector3(0, 0, 1), rotateAngle);
-  if (keyboard.pressed("D"))
+  if (keyboard.pressed("D") && acceleration > 0)
     car.rotateOnAxis(new THREE.Vector3(0, 0, 1), -rotateAngle);
-  if (keyboard.pressed("R"))
-    car.rotateOnAxis(new THREE.Vector3(1, 0, 0), rotateAngle);
-  if (keyboard.pressed("F"))
-    car.rotateOnAxis(new THREE.Vector3(1, 0, 0), -rotateAngle);
 
   if (keyboard.pressed("Z")) {
+    // тревожная кнопка
     car.position.set(0, 0, 0, 0);
     car.rotation.set(0, 0, 0);
   }
