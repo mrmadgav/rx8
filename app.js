@@ -45,14 +45,17 @@ function makeDrive() {
   let axesHelper = new THREE.AxesHelper(500);
   scene.add(axesHelper);
 
-  car.rotation.x = -1.57;
+  // car.rotation.x = -1.57;
   car.position.x = 0;
   car.position.y = 0;
   car.position.z = 0;
   car.rotation.z = Math.PI;
+  car.rotation.x = -1.57;
   console.log(camera);
   camera.position = car.position;
-  
+  // car.position.set(0, 0, 0, 0);
+  // car.rotation.set(0, 0, 0);
+  document.body.style.background = "none";
 }
 drive.addEventListener("click", makeDrive);
 
@@ -144,14 +147,13 @@ function update() {
     rimIDcolor.g = settings.rimsGreen;
     rimIDcolor.b = settings.rimsBlue;
     // car.parent.children[0].children[0].children[0].children[12].material.color.r = 1;
-   car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.1;
-   car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.1;
-   car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.1;
-   car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.1;
+    car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.1;
+    car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.1;
+    car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.1;
+    car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.1;
   }
 
   if (drive.dataset.status === "OnDrive") {
-    document.body.style.background = "none";
   }
 }
 
@@ -162,17 +164,29 @@ function logKey(e) {
   var delta = clock.getDelta(); // seconds.
   var moveDistance = 200 * delta; // 200 pixels per second
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
-  if (keyboard.pressed("W")) car.translateZ(-moveDistance);
+  if (keyboard.pressed("W")) {
+    car.translateX(-moveDistance);
+    car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.1;
+    car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.1;
+    car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.1;
+    car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.1;
+  }
   console.log(car.position.x, car.position.y, car.position.z);
-  if (keyboard.pressed("S")) car.translateZ(moveDistance);
+  if (keyboard.pressed("S")) {
+    car.translateX(moveDistance);
+    car.parent.children[0].children[0].children[0].children[11].rotation.x -= 0.1;
+    car.parent.children[0].children[0].children[0].children[12].rotation.x -= 0.1;
+    car.parent.children[0].children[0].children[0].children[13].rotation.x -= 0.1;
+    car.parent.children[0].children[0].children[0].children[14].rotation.x -= 0.1;
+  }
   if (keyboard.pressed("Q")) car.translateX(-moveDistance);
   if (keyboard.pressed("E")) car.translateX(moveDistance);
   // rotate left/right/up/down
 
   if (keyboard.pressed("A"))
-    car.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
+    car.rotateOnAxis(new THREE.Vector3(0, 0, 1), rotateAngle);
   if (keyboard.pressed("D"))
-    car.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
+    car.rotateOnAxis(new THREE.Vector3(0, 0, 1), -rotateAngle);
   if (keyboard.pressed("R"))
     car.rotateOnAxis(new THREE.Vector3(1, 0, 0), rotateAngle);
   if (keyboard.pressed("F"))
