@@ -157,9 +157,9 @@ function logKey(e) {
   var delta = clock.getDelta(); // seconds.
   var moveDistance = 200 * delta; // 200 pixels per second
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
-  if (keyboard.pressed("W")) car.translateX(-moveDistance);
+  if (keyboard.pressed("W")) car.translateZ(-moveDistance);
   console.log(car.position.x, car.position.y, car.position.z);
-  if (keyboard.pressed("S")) car.translateX(moveDistance);
+  if (keyboard.pressed("S")) car.translateZ(moveDistance);
   if (keyboard.pressed("Q")) car.translateX(-moveDistance);
   if (keyboard.pressed("E")) car.translateX(moveDistance);
   // rotate left/right/up/down
