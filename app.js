@@ -8,6 +8,7 @@ let car;
 let gui;
 var clock = new THREE.Clock();
 var keyboard = new THREEx.KeyboardState();
+let acceleration = 0;
 //НАСТРОЙКИ ДЛЯ ДАТ ГУИ
 let settings = {
   // ключи поворота модели
@@ -37,7 +38,7 @@ function makeDrive() {
   makeInfoContainer.innerHTML = "Use WASD to Drive";
   let body = document.querySelector("body");
   body.appendChild(makeInfoContainer);
-  body.addEventListener("keydown", logKey);
+  // body.addEventListener("keydown", logKey);
   gui.close();
   let ground = new THREE.PlaneGeometry(500, 500);
   let material = new THREE.MeshNormalMaterial((wireframe = true));
@@ -152,20 +153,20 @@ function update() {
     car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.1;
     car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.1;
     car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.1;
-  }
-
+  } 
   if (drive.dataset.status === "OnDrive") {
+    logKey();
   }
 }
 
-let acceleration = 0;
+
 var rotation_matrix = new THREE.Matrix4().identity();
 //отлавливает нажатие клавиши управления
 function logKey(e) {
   console.log(`Скорость: ${acceleration / 10}`);
   console.log(`скорость вращения колеса, ${car.parent.children[0].children[0].children[0].children[11].rotation.x}`     
   );
-  // console.log(`Координаты машины: x: ${parseInt(car.position.x)} y: ${parseInt(car.position.y)} z: ${parseInt(car.position.z)}`); - довольно странно отображает
+  // console.log(`Координаты машины: x: ${parseInt(car.position.x)} y: ${parseInt(car.position.y)} z: ${parseInt(car.position.z)}`); - довольно странно
   var delta = clock.getDelta(); // seconds.
 
   // var moveDistance = 200 * delta; // 200 pixels per second вынесено внутрь условия if
