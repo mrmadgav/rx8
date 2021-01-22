@@ -69,7 +69,6 @@ loader.load("./mazda_rx8/sceneUpdated_withWheels.gltf", function (gltf) {
   animate(); // функция запускает анимацию
 });
 
-
 function init() {
   container = document.querySelector(".scene");
 
@@ -153,18 +152,18 @@ function update() {
     car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.1;
     car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.1;
     car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.1;
-  } 
+  }
   if (drive.dataset.status === "OnDrive") {
     logKey();
   }
 }
 
-
 var rotation_matrix = new THREE.Matrix4().identity();
 //отлавливает нажатие клавиши управления
 function logKey(e) {
   console.log(`Скорость: ${acceleration / 10}`);
-  console.log(`скорость вращения колеса, ${car.parent.children[0].children[0].children[0].children[11].rotation.x}`     
+  console.log(
+    `скорость вращения колеса, ${car.parent.children[0].children[0].children[0].children[11].rotation.x}`
   );
   // console.log(`Координаты машины: x: ${parseInt(car.position.x)} y: ${parseInt(car.position.y)} z: ${parseInt(car.position.z)}`); - довольно странно
   var delta = clock.getDelta(); // seconds.
@@ -174,11 +173,11 @@ function logKey(e) {
   if (keyboard.pressed("W")) {
     if (acceleration <= 1400) acceleration += 100;
     car.translateY(-acceleration * delta);
-    car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.25;   
+    car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.25;
     car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.25;
     car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.25;
     car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.25;
-  } 
+  }
   // while (acceleration > 0) {
   //   acceleration -= 10;
   // }
@@ -212,5 +211,4 @@ function onWindowResize() {
 
   renderer.setSize(container.clientWidth, container.clientHeight);
 }
-
 window.addEventListener("resize", onWindowResize);
