@@ -31,7 +31,13 @@ drive.dataset.status = "OnStyle";
 // Функция, включающая по нажатию на кнопку drive камеру от первого лица и возможность ездить на авто
 function makeDrive() {
   drive.dataset.status = "OnDrive";
-  document.querySelector("body").addEventListener("keydown", logKey);
+
+  document.body.style.background = "none";
+  let makeInfoContainer = document.createElement("P");
+  makeInfoContainer.innerHTML = "Use WASD to Drive";
+  let body = document.querySelector("body");
+  body.appendChild(makeInfoContainer);
+  body.addEventListener("keydown", logKey);
   gui.close();
   let ground = new THREE.PlaneGeometry(500, 500);
   let material = new THREE.MeshNormalMaterial((wireframe = true));
@@ -53,10 +59,11 @@ function makeDrive() {
   car.rotation.x = -1.57;
   console.log(camera);
   camera.position = car.position;
+  // camera.lookAt(car); // не работает
   // car.position.set(0, 0, 0, 0);
   // car.rotation.set(0, 0, 0);
-  document.body.style.background = "none";
 }
+
 drive.addEventListener("click", makeDrive);
 
 let loader = new THREE.GLTFLoader();
@@ -179,8 +186,6 @@ function logKey(e) {
     car.parent.children[0].children[0].children[0].children[13].rotation.x -= 0.1;
     car.parent.children[0].children[0].children[0].children[14].rotation.x -= 0.1;
   }
-  if (keyboard.pressed("Q")) car.translateX(-moveDistance);
-  if (keyboard.pressed("E")) car.translateX(moveDistance);
   // rotate left/right/up/down
 
   if (keyboard.pressed("A"))
