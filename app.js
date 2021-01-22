@@ -57,8 +57,8 @@ function makeDrive() {
   car.position.z = 0;
   car.rotation.z = Math.PI;
   car.rotation.x = -1.57;
-  console.log(camera);
-  camera.position = car.position;
+  // console.log(camera);
+  // camera.position = car.position;
   // camera.lookAt(car); // не работает
   // car.position.set(0, 0, 0, 0);
   // car.rotation.set(0, 0, 0);
@@ -172,7 +172,7 @@ function logKey(e) {
   var moveDistance = 200 * delta; // 200 pixels per second
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
   if (keyboard.pressed("W")) {
-    car.translateX(-moveDistance);
+    car.translateY(-moveDistance);
     car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.1;
     car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.1;
     car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.1;
@@ -180,7 +180,7 @@ function logKey(e) {
   }
   console.log(car.position.x, car.position.y, car.position.z);
   if (keyboard.pressed("S")) {
-    car.translateX(moveDistance);
+    car.translateY(moveDistance);
     car.parent.children[0].children[0].children[0].children[11].rotation.x -= 0.1;
     car.parent.children[0].children[0].children[0].children[12].rotation.x -= 0.1;
     car.parent.children[0].children[0].children[0].children[13].rotation.x -= 0.1;
@@ -206,7 +206,9 @@ function logKey(e) {
 
   // camera.position.x = cameraOffset.x;
   // camera.position.y = cameraOffset.y;
-  // camera.position.z = car.position.z;
+  camera.position.z = car.position.z + 600;
+  // camera.position.y = car.position.y + 100;
+  // camera.position.x = car.position.x + 100;
   camera.lookAt(car.position);
 }
 
