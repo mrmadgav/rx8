@@ -46,7 +46,7 @@ function makeDrive() {
 
   scene.add(meshGround);
   meshGround.rotation.x += Math.PI / 2;
-  let gridHelper = new THREE.GridHelper(800, 50);
+  let gridHelper = new THREE.GridHelper(8000, 50);
   scene.add(gridHelper);
   let axesHelper = new THREE.AxesHelper(500);
   scene.add(axesHelper);
@@ -84,7 +84,7 @@ function init() {
   let fov = 40;
   let aspect = container.clientWidth / container.clientHeight;
   let near = 0.1;
-  let far = 2000;
+  let far = 200000;
 
   //ДЕЛАЕМ КАМЕРУ
   camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
@@ -163,16 +163,19 @@ function update() {
   if (drive.dataset.status === "OnDrive") {
   }
 }
-
+let acceleration = 0;
 var rotation_matrix = new THREE.Matrix4().identity();
 //отлавливает нажатие клавиши управления
 function logKey(e) {
   console.log(`${e.code}`);
   var delta = clock.getDelta(); // seconds.
+
   var moveDistance = 200 * delta; // 200 pixels per second
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
   if (keyboard.pressed("W")) {
-    car.translateY(-moveDistance);
+    if (acceleration<=1400) acceleration += 10;
+    console.log(acceleration);
+    car.translateY(-acceleration * delta);
     car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.1;
     car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.1;
     car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.1;
@@ -180,7 +183,9 @@ function logKey(e) {
   }
   console.log(car.position.x, car.position.y, car.position.z);
   if (keyboard.pressed("S")) {
-    car.translateY(moveDistance);
+    if (acceleration<=600) acceleration += 10;
+    console.log(acceleration);
+    car.translateY(acceleration * delta);
     car.parent.children[0].children[0].children[0].children[11].rotation.x -= 0.1;
     car.parent.children[0].children[0].children[0].children[12].rotation.x -= 0.1;
     car.parent.children[0].children[0].children[0].children[13].rotation.x -= 0.1;
@@ -201,14 +206,7 @@ function logKey(e) {
     car.position.set(0, 0, 0, 0);
     car.rotation.set(0, 0, 0);
   }
-  // // var relativeCameraOffset = new THREE.Vector3(0, 50, 600);
-  // // var cameraOffset = relativeCameraOffset.applyMatrix4(car.matrixWorld);
-
-  // camera.position.x = cameraOffset.x;
-  // camera.position.y = cameraOffset.y;
   camera.position.z = car.position.z + 600;
-  // camera.position.y = car.position.y + 100;
-  // camera.position.x = car.position.x + 100;
   camera.lookAt(car.position);
 }
 
