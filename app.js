@@ -50,8 +50,9 @@ function makeDrive() {
   car.position.y = 0;
   car.position.z = 0;
   car.rotation.z = Math.PI;
-  fov = 0;
   console.log(camera);
+  camera.position = car.position;
+  
 }
 drive.addEventListener("click", makeDrive);
 
@@ -156,9 +157,9 @@ function logKey(e) {
   var delta = clock.getDelta(); // seconds.
   var moveDistance = 200 * delta; // 200 pixels per second
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
-  if (keyboard.pressed("W")) car.translateZ(-moveDistance);
+  if (keyboard.pressed("W")) car.translateX(-moveDistance);
   console.log(car.position.x, car.position.y, car.position.z);
-  if (keyboard.pressed("S")) car.translateZ(moveDistance);
+  if (keyboard.pressed("S")) car.translateX(moveDistance);
   if (keyboard.pressed("Q")) car.translateX(-moveDistance);
   if (keyboard.pressed("E")) car.translateX(moveDistance);
   // rotate left/right/up/down
@@ -176,12 +177,12 @@ function logKey(e) {
     car.position.set(0, 0, 0, 0);
     car.rotation.set(0, 0, 0);
   }
-  var relativeCameraOffset = new THREE.Vector3(0, 50, 600);
-  var cameraOffset = relativeCameraOffset.applyMatrix4(car.matrixWorld);
+  // // var relativeCameraOffset = new THREE.Vector3(0, 50, 600);
+  // // var cameraOffset = relativeCameraOffset.applyMatrix4(car.matrixWorld);
 
-  camera.position.x = cameraOffset.x;
-  camera.position.y = cameraOffset.y;
-  camera.position.z = car.position.z;
+  // camera.position.x = cameraOffset.x;
+  // camera.position.y = cameraOffset.y;
+  // camera.position.z = car.position.z;
   camera.lookAt(car.position);
 }
 
