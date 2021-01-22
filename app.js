@@ -51,17 +51,11 @@ function makeDrive() {
   let axesHelper = new THREE.AxesHelper(500);
   scene.add(axesHelper);
 
-  // car.rotation.x = -1.57;
   car.position.x = 0;
   car.position.y = 0;
   car.position.z = 0;
   car.rotation.z = Math.PI;
   car.rotation.x = -1.57;
-  // console.log(camera);
-  // camera.position = car.position;
-  // camera.lookAt(car); // не работает
-  // car.position.set(0, 0, 0, 0);
-  // car.rotation.set(0, 0, 0);
 }
 
 drive.addEventListener("click", makeDrive);
@@ -73,7 +67,7 @@ loader.load("./mazda_rx8/sceneUpdated_withWheels.gltf", function (gltf) {
   car = gltf.scene.children[0];
   animate(); // функция запускает анимацию
 });
-// console.log(drive.dataset.status === 'OnStyle');
+
 
 function init() {
   container = document.querySelector(".scene");
@@ -163,28 +157,32 @@ function update() {
   if (drive.dataset.status === "OnDrive") {
   }
 }
+
 let acceleration = 0;
 var rotation_matrix = new THREE.Matrix4().identity();
 //отлавливает нажатие клавиши управления
 function logKey(e) {
-  console.log(`${e.code}`);
+  console.log(`Скорость: ${acceleration / 10}`);
+  console.log(`скорость вращения колеса, ${car.parent.children[0].children[0].children[0].children[11].rotation.x}`     
+  );
+  // console.log(`Координаты машины: x: ${parseInt(car.position.x)} y: ${parseInt(car.position.y)} z: ${parseInt(car.position.z)}`); - довольно странно отображает
   var delta = clock.getDelta(); // seconds.
 
   // var moveDistance = 200 * delta; // 200 pixels per second вынесено внутрь условия if
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
   if (keyboard.pressed("W")) {
-    if (acceleration <= 1400) acceleration += 10;    
+    if (acceleration <= 1400) acceleration += 100;
     car.translateY(-acceleration * delta);
-    car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.25;
-    console.log(car.parent.children[0].children[0].children[0].children[11].rotation.x);
+    car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.25;   
     car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.25;
     car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.25;
     car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.25;
-  }
-  console.log(car.position.x, car.position.y, car.position.z);
+  } 
+  // while (acceleration > 0) {
+  //   acceleration -= 10;
+  // }
   if (keyboard.pressed("S")) {
     if (acceleration <= 600) acceleration += 10;
-    console.log(acceleration);
     car.translateY(acceleration * delta);
     car.parent.children[0].children[0].children[0].children[11].rotation.x -= 0.1;
     car.parent.children[0].children[0].children[0].children[12].rotation.x -= 0.1;
