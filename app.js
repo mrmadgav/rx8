@@ -57,7 +57,7 @@ function makeDrive() {
 drive.addEventListener("click", makeDrive);
 
 let loader = new THREE.GLTFLoader();
-loader.load("./mazda_rx8/sceneUpdated.gltf", function (gltf) {
+loader.load("./mazda_rx8/sceneUpdated_withWheels.gltf", function (gltf) {
   init(); // запускаем всю сцену
   scene.add(gltf.scene);
   car = gltf.scene.children[0];
@@ -143,6 +143,11 @@ function update() {
     rimIDcolor.r = settings.rimsRed;
     rimIDcolor.g = settings.rimsGreen;
     rimIDcolor.b = settings.rimsBlue;
+    // car.parent.children[0].children[0].children[0].children[12].material.color.r = 1;
+   car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.1;
+   car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.1;
+   car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.1;
+   car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.1;
   }
 
   if (drive.dataset.status === "OnDrive") {
