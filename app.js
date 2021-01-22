@@ -59,6 +59,11 @@ function makeDrive() {
   car.position.z = 0;
   car.rotation.z = Math.PI;
   car.rotation.x = -1.57;
+  //сбрасываем скорость вращения колёс
+  car.parent.children[0].children[0].children[0].children[11].rotation.x = 0;
+  car.parent.children[0].children[0].children[0].children[12].rotation.x = 0;
+  car.parent.children[0].children[0].children[0].children[13].rotation.x = 0;
+  car.parent.children[0].children[0].children[0].children[14].rotation.x = 0;
 }
 
 drive.addEventListener("click", makeDrive);
@@ -171,26 +176,29 @@ function onDrive(e) {
   // console.log(`Координаты машины: x: ${parseInt(car.position.x)} y: ${parseInt(car.position.y)} z: ${parseInt(car.position.z)}`); - довольно странно
 
   var delta = clock.getDelta(); // seconds.
-  // var moveDistance = 200 * delta; // 200 pixels per second вынесено внутрь условия if
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
 
   if (keyboard.pressed("W")) {
-    if (acceleration <= 1400) acceleration += 25;
+    if (acceleration <= 1400) acceleration += 20;
     console.log(acceleration);
   }
   car.translateY(parseInt(-acceleration * delta));
-  car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.25;
-  car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.25;
-  car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.25;
-  car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.25;
+  car.parent.children[0].children[0].children[0].children[11].rotation.x +=
+    acceleration * 0.005;
+  car.parent.children[0].children[0].children[0].children[12].rotation.x +=
+    acceleration * 0.005;
+  car.parent.children[0].children[0].children[0].children[13].rotation.x +=
+    acceleration * 0.005;
+  car.parent.children[0].children[0].children[0].children[14].rotation.x +=
+    acceleration * 0.005;
 
   if (keyboard.pressed("S")) {
-    if (acceleration <= 60 || acceleration > 0) {acceleration -= 10;
-    car.translateY(parseInt(acceleration * delta));
-    car.parent.children[0].children[0].children[0].children[11].rotation.x -= 0.25;
-    car.parent.children[0].children[0].children[0].children[12].rotation.x -= 0.25;
-    car.parent.children[0].children[0].children[0].children[13].rotation.x -= 0.25;
-    car.parent.children[0].children[0].children[0].children[14].rotation.x -= 0.25;
+    if (acceleration >= 10) {
+      acceleration -= 20;
+      car.parent.children[0].children[0].children[0].children[11].rotation.x = 0;
+      car.parent.children[0].children[0].children[0].children[12].rotation.x = 0;
+      car.parent.children[0].children[0].children[0].children[13].rotation.x = 0;
+      car.parent.children[0].children[0].children[0].children[14].rotation.x = 0;
     }
   }
   // rotate left/right/up/down
