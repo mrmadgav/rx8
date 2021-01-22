@@ -175,23 +175,23 @@ function onDrive(e) {
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
 
   if (keyboard.pressed("W")) {
-    if (acceleration <= 1400) acceleration += 100;
-    car.translateY(-acceleration * delta);
-    car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.25;
-    car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.25;
-    car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.25;
-    car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.25;
+    if (acceleration <= 1400) acceleration += 25;
+    console.log(acceleration);
   }
-  // while (acceleration > 0) {
-  //   acceleration -= 10;
-  // }
+  car.translateY(-acceleration * delta);
+  car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.25;
+  car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.25;
+  car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.25;
+  car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.25;
+
   if (keyboard.pressed("S")) {
-    if (acceleration <= 600) acceleration += 10;
+    if (acceleration <= 60 || acceleration > 0) {acceleration -= 10;
     car.translateY(acceleration * delta);
-    car.parent.children[0].children[0].children[0].children[11].rotation.x -= 0.1;
-    car.parent.children[0].children[0].children[0].children[12].rotation.x -= 0.1;
-    car.parent.children[0].children[0].children[0].children[13].rotation.x -= 0.1;
-    car.parent.children[0].children[0].children[0].children[14].rotation.x -= 0.1;
+    car.parent.children[0].children[0].children[0].children[11].rotation.x -= 0.25;
+    car.parent.children[0].children[0].children[0].children[12].rotation.x -= 0.25;
+    car.parent.children[0].children[0].children[0].children[13].rotation.x -= 0.25;
+    car.parent.children[0].children[0].children[0].children[14].rotation.x -= 0.25;
+    }
   }
   // rotate left/right/up/down
   if (keyboard.pressed("A") && acceleration > 0)
