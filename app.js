@@ -178,7 +178,7 @@ function onDrive(e) {
     if (acceleration <= 1400) acceleration += 25;
     console.log(acceleration);
   }
-  car.translateY(-acceleration * delta);
+  car.translateY(parseInt(-acceleration * delta));
   car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.25;
   car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.25;
   car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.25;
@@ -186,7 +186,7 @@ function onDrive(e) {
 
   if (keyboard.pressed("S")) {
     if (acceleration <= 60 || acceleration > 0) {acceleration -= 10;
-    car.translateY(acceleration * delta);
+    car.translateY(parseInt(acceleration * delta));
     car.parent.children[0].children[0].children[0].children[11].rotation.x -= 0.25;
     car.parent.children[0].children[0].children[0].children[12].rotation.x -= 0.25;
     car.parent.children[0].children[0].children[0].children[13].rotation.x -= 0.25;
