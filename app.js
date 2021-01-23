@@ -42,7 +42,7 @@ function makeDrive() {
   gui.close();
   // FLOOR
   var floorTexture = new THREE.ImageUtils.loadTexture(
-    "./env_textures/road.jpg"
+    "./env_textures/road4.jpg"
   );
   floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
   floorTexture.repeat.set(20, 20);
