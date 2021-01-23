@@ -40,22 +40,39 @@ function makeDrive() {
   body.appendChild(makeInfoContainer);
   // body.addEventListener("keydown", logKey);
   gui.close();
-	// FLOOR
-	var floorTexture = new THREE.ImageUtils.loadTexture( './env_textures/road.jpg' );
-	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
-	floorTexture.repeat.set( 20, 20 );
-	var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-	var floorGeometry = new THREE.PlaneGeometry(8000, 8000, 1, 1);
-	var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-	floor.position.y = -0.5;
-	floor.rotation.x = Math.PI / 2;
-	scene.add(floor);
+  // FLOOR
+  var floorTexture = new THREE.ImageUtils.loadTexture(
+    "./env_textures/road.jpg"
+  );
+  floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+  floorTexture.repeat.set(20, 20);
+  var floorMaterial = new THREE.MeshBasicMaterial({
+    map: floorTexture,
+    side: THREE.DoubleSide,
+  });
+  var floorGeometry = new THREE.PlaneGeometry(8000, 8000, 1, 1);
+  var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  floor.position.y = -0.5;
+  floor.rotation.x = Math.PI / 2;
+  scene.add(floor);
   //сетка
-  let gridHelper = new THREE.GridHelper(8000, 50);
-  scene.add(gridHelper);
+  // let gridHelper = new THREE.GridHelper(8000, 50);
+  // scene.add(gridHelper);
   //оси
-  let axesHelper = new THREE.AxesHelper(500);
-  scene.add(axesHelper);
+  // let axesHelper = new THREE.AxesHelper(500);
+  // scene.add(axesHelper);
+  // skyBox
+  const skyLoader = new THREE.CubeTextureLoader();
+  const skyTexture = skyLoader.load([
+    "./env_textures/posx.jpg",
+    "./env_textures/negx.jpg",
+    "./env_textures/posy.jpg",
+    "./env_textures/negy.jpg",
+    "./env_textures/posz.jpg",
+    "./env_textures/negz.jpg",
+  ]);
+  skyTexture.encoding = THREE.sRGBEncoding;
+  scene.background = skyTexture;
   //сбрасываем координаты машины
   car.position.x = 0;
   car.position.y = 0;
