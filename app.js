@@ -53,7 +53,7 @@ function makeDrive() {
   //оси
   let axesHelper = new THREE.AxesHelper(500);
   scene.add(axesHelper);
-  //выставляем тачку
+  //сбрасываем координаты машины
   car.position.x = 0;
   car.position.y = 0;
   car.position.z = 0;
@@ -69,7 +69,7 @@ function makeDrive() {
 drive.addEventListener("click", makeDrive);
 
 let loader = new THREE.GLTFLoader();
-loader.load("./mazda_rx8/sceneUpdated_withWheels.gltf", function (gltf) {
+loader.load("./mazda_rx8/sceneUpdated_withWheels and front rims.gltf", function (gltf) {
   init(); // запускаем всю сцену
   scene.add(gltf.scene);
   car = gltf.scene.children[0];
@@ -184,13 +184,13 @@ function onDrive(e) {
   }
   car.translateY(parseInt(-acceleration * delta));
   car.parent.children[0].children[0].children[0].children[11].rotation.x +=
-    acceleration * 0.005;
+    acceleration * 0.0005;
   car.parent.children[0].children[0].children[0].children[12].rotation.x +=
-    acceleration * 0.005;
+    acceleration * 0.0005;
   car.parent.children[0].children[0].children[0].children[13].rotation.x +=
-    acceleration * 0.005;
+    acceleration * 0.0005;
   car.parent.children[0].children[0].children[0].children[14].rotation.x +=
-    acceleration * 0.005;
+    acceleration * 0.0005;
 
   if (keyboard.pressed("S")) {
     if (acceleration >= 10) {
