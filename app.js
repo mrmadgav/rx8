@@ -200,9 +200,13 @@ function onDrive(e) {
 
   var delta = clock.getDelta(); // seconds.
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
-
+  // порядок вращения колес
+  // car.parent.children[0].children[0].children[0].children[13].rotation.order =
+  //   "YXZ";
+  // car.parent.children[0].children[0].children[0].children[14].rotation.order =
+  //   "YXZ";
   if (keyboard.pressed("W")) {
-    if (acceleration <= 1400) acceleration += 20;
+    if (acceleration <= 1400) acceleration += 10;
     console.log(acceleration);
     // car.parent.children[0].children[0].children[0].children[13].rotateOnAxis(
     //   new THREE.Vector3(0, 0, 1),
@@ -232,13 +236,27 @@ function onDrive(e) {
   // rotate left/right/up/down
   if (keyboard.pressed("A") && acceleration > 0) {
     car.rotateOnAxis(new THREE.Vector3(0, 0, 1), rotateAngle);
+
     // car.parent.children[0].children[0].children[0].children[13].rotateOnAxis(
-    //   new THREE.Vector3(0, 0, 1),
+    //   new THREE.Vector3(0, 1, 0),
     //   rotateAngle
-    // )/10;
+    // ) / 10; 
+    // car.parent.children[0].children[0].children[0].children[14].rotateOnAxis(
+    //   new THREE.Vector3(0, 1, 0),
+    //   rotateAngle
+    // ) / 10;
   }
-  if (keyboard.pressed("D") && acceleration > 0)
+  if (keyboard.pressed("D") && acceleration > 0) {
     car.rotateOnAxis(new THREE.Vector3(0, 0, 1), -rotateAngle);
+    // car.parent.children[0].children[0].children[0].children[13].rotateOnAxis(
+    //   new THREE.Vector3(0, 1, 0),
+    //   -rotateAngle
+    // ) / 10;
+    // car.parent.children[0].children[0].children[0].children[14].rotateOnAxis(
+    //   new THREE.Vector3(0, 1, 0),
+    //   -rotateAngle
+    // ) / 10;
+  }
 
   if (keyboard.pressed("Z")) {
     // тревожная кнопка
