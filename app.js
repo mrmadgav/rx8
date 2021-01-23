@@ -40,13 +40,16 @@ function makeDrive() {
   body.appendChild(makeInfoContainer);
   // body.addEventListener("keydown", logKey);
   gui.close();
-  //поверхность для езды
-  let ground = new THREE.PlaneGeometry(500, 500);
-  let material = new THREE.MeshNormalMaterial((wireframe = true));
-
-  meshGround = new THREE.Mesh(ground, material);
-  scene.add(meshGround);
-  meshGround.rotation.x += Math.PI / 2;
+	// FLOOR
+	var floorTexture = new THREE.ImageUtils.loadTexture( './env_textures/road.jpg' );
+	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+	floorTexture.repeat.set( 20, 20 );
+	var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+	var floorGeometry = new THREE.PlaneGeometry(8000, 8000, 1, 1);
+	var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+	floor.position.y = -0.5;
+	floor.rotation.x = Math.PI / 2;
+	scene.add(floor);
   //сетка
   let gridHelper = new THREE.GridHelper(8000, 50);
   scene.add(gridHelper);
@@ -69,13 +72,16 @@ function makeDrive() {
 drive.addEventListener("click", makeDrive);
 
 let loader = new THREE.GLTFLoader();
-loader.load("./mazda_rx8/sceneUpdated_withWheels and front rims.gltf", function (gltf) {
-  init(); // запускаем всю сцену
-  scene.add(gltf.scene);
-  car = gltf.scene.children[0];
-  car.castShadow = true;
-  animate(); // функция запускает анимацию
-});
+loader.load(
+  "./mazda_rx8/sceneUpdated_withWheels and front rims.gltf",
+  function (gltf) {
+    init(); // запускаем всю сцену
+    scene.add(gltf.scene);
+    car = gltf.scene.children[0];
+    car.castShadow = true;
+    animate(); // функция запускает анимацию
+  }
+);
 
 function init() {
   container = document.querySelector(".scene");
@@ -181,8 +187,13 @@ function onDrive(e) {
   if (keyboard.pressed("W")) {
     if (acceleration <= 1400) acceleration += 20;
     console.log(acceleration);
+    // car.parent.children[0].children[0].children[0].children[13].rotateOnAxis(
+    //   new THREE.Vector3(0, 0, 1),
+    //   rotateAngle
+    // )/10; - здесь тоже ось вращения не срабатывает
   }
   car.translateY(parseInt(-acceleration * delta));
+
   car.parent.children[0].children[0].children[0].children[11].rotation.x +=
     acceleration * 0.0005;
   car.parent.children[0].children[0].children[0].children[12].rotation.x +=
@@ -202,8 +213,13 @@ function onDrive(e) {
     }
   }
   // rotate left/right/up/down
-  if (keyboard.pressed("A") && acceleration > 0)
+  if (keyboard.pressed("A") && acceleration > 0) {
     car.rotateOnAxis(new THREE.Vector3(0, 0, 1), rotateAngle);
+    // car.parent.children[0].children[0].children[0].children[13].rotateOnAxis(
+    //   new THREE.Vector3(0, 0, 1),
+    //   rotateAngle
+    // )/10;
+  }
   if (keyboard.pressed("D") && acceleration > 0)
     car.rotateOnAxis(new THREE.Vector3(0, 0, 1), -rotateAngle);
 
@@ -222,4 +238,4 @@ function onWindowResize() {
 
   renderer.setSize(container.clientWidth, container.clientHeight);
 }
-window.addEventListener("resize", onWindowResize);
+// window.addEventListener("resize", onWindowResize);
