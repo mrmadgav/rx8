@@ -264,23 +264,23 @@ function onDrive(e) {
     }
   }
   // rotate left/right/up/down
-  if (keyboard.pressed("A") && acceleration > 0) {
-    car.rotateOnAxis(new THREE.Vector3(0, 0, 1), rotateAngle);
-    if (0 <= rightWheel.rotation.z <= 1) {
-      rightWheel.rotation.z += rotateAngle / 2;
-      rightRim.rotation.z += rotateAngle / 2;
-      leftWheel.rotation.z += rotateAngle / 2;
-      leftRim.rotation.z += rotateAngle / 2;
-    }
+  if (keyboard.pressed("A")) {
+    rightWheel.rotation.z += rotateAngle;
+    rightRim.rotation.z += rotateAngle;
+    leftWheel.rotation.z += rotateAngle;
+    leftRim.rotation.z += rotateAngle;
+
+    if (acceleration > 0)
+      car.rotateOnAxis(new THREE.Vector3(0, 0, 1), rotateAngle);
   }
-  if (keyboard.pressed("D") && acceleration > 0) {
-    car.rotateOnAxis(new THREE.Vector3(0, 0, 1), -rotateAngle);
-    if (0 <= rightWheel.rotation.z <= 1) {
-      rightWheel.rotation.z -= rotateAngle / 2;
-      rightRim.rotation.z -= rotateAngle / 2;
-      leftWheel.rotation.z -= rotateAngle / 2;
-      leftRim.rotation.z -= rotateAngle / 2;
-    }
+  if (keyboard.pressed("D")) {
+    rightWheel.rotation.z -= rotateAngle;
+    rightRim.rotation.z -= rotateAngle;
+    leftWheel.rotation.z -= rotateAngle;
+    leftRim.rotation.z -= rotateAngle;
+
+    if (acceleration > 0)
+      car.rotateOnAxis(new THREE.Vector3(0, 0, 1), -rotateAngle);
   }
 
   if (keyboard.pressed("Z")) {
