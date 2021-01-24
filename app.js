@@ -1,3 +1,6 @@
+"use strict";
+console.clear();
+// import * as THREE from "https://threejs.org/build/three.module.js";
 //Основные переменные
 var rotation_matrix = new THREE.Matrix4().identity();
 var clock = new THREE.Clock();
@@ -203,60 +206,81 @@ function onDrive(e) {
   car.translateY(parseInt(-acceleration * delta));
   // acceleration = 0.7*acceleration; // сила трения (?)
   // порядок вращения колес
-  // car.parent.children[0].children[0].children[0].children[13].rotation.order =
-  //   "YXZ";
-  // car.parent.children[0].children[0].children[0].children[14].rotation.order =
-  //   "YXZ";
+  let leftWheel = car.parent.children[0].children[0].children[0].children[13];
+  let rightWheel = car.parent.children[0].children[0].children[0].children[14];
+  let leftRim = car.parent.children[0].children[0].children[0].children[21]; // левая передняя шина
+  let rightRim = car.parent.children[0].children[0].children[0].children[22]; // правая передняя шина
+  leftWheel.rotation.order = "ZYX";
+  rightWheel.rotation.order = "ZYX";
+  console.log(leftWheel.rotation.y);
+
+  // СПОСОБ УМНЫХ ЛЮДЕЙ //
+
+  // document.addEventListener("keydown", (event) => {
+  //   console.log(event);
+  //   let val = 0.05;
+  //   let angleTurn = event.key == "d" ? -val : event.key == "a" ? val : 0;
+  //   event.key == "w"
+  //     ? ((rightWheel.rotation.x += 0.05), (leftWheel.rotation.x += 0.05))
+  //     : event.key == "s"
+  //     ? ((rightWheel.rotation.x -= 0.05), (leftWheel.rotation.x -= 0.05))
+  //     : 0;
+  //   console.log(
+  //     `Поворот колеса = ${rightWheel.rotation.y} +  угол поворота ${angleTurn}`
+  //   );
+  //   leftWheel.rotation.y = THREE.MathUtils.clamp(
+  //     leftWheel.rotation.y + angleTurn,
+  //     -Math.PI * 0.25,
+  //     Math.PI * 0.25
+  //   );
+  //   rightWheel.rotation.y = THREE.MathUtils.clamp(
+  //     rightWheel.rotation.y + angleTurn,
+  //     -Math.PI * 0.25,
+  //     Math.PI * 0.25
+  //   );
+  // });
+
+  // СПОСОБ НЕ ОЧЕНЬ УМНОГО МЕНЯ
+
   if (keyboard.pressed("W")) {
     if (acceleration <= 1400) acceleration += 20;
-    console.log(acceleration);
-    // car.parent.children[0].children[0].children[0].children[13].rotateOnAxis(
-    //   new THREE.Vector3(0, 0, 1),
-    //   rotateAngle
-    // )/10; - здесь тоже ось вращения не срабатывает
+    console.log("Скорость = ", acceleration);
   }
 
   car.parent.children[0].children[0].children[0].children[11].rotation.x +=
     acceleration * 0.0005;
   car.parent.children[0].children[0].children[0].children[12].rotation.x +=
     acceleration * 0.0005;
-  car.parent.children[0].children[0].children[0].children[13].rotation.x +=
-    acceleration * 0.0005;
-  car.parent.children[0].children[0].children[0].children[14].rotation.x +=
-    acceleration * 0.0005;
+  leftWheel.rotation.x += acceleration * 0.0005;
+  rightWheel.rotation.x += acceleration * 0.0005;
 
   if (keyboard.pressed("S")) {
     if (acceleration >= 10) {
       acceleration -= 20;
       car.parent.children[0].children[0].children[0].children[11].rotation.x = 0;
       car.parent.children[0].children[0].children[0].children[12].rotation.x = 0;
-      car.parent.children[0].children[0].children[0].children[13].rotation.x = 0;
-      car.parent.children[0].children[0].children[0].children[14].rotation.x = 0;
+      leftWheel.rotation.x = 0;
+      rightWheel.rotation.x = 0;
     }
   }
   // rotate left/right/up/down
   if (keyboard.pressed("A") && acceleration > 0) {
     car.rotateOnAxis(new THREE.Vector3(0, 0, 1), rotateAngle);
-
-    // car.parent.children[0].children[0].children[0].children[13].rotateOnAxis(
-    //   new THREE.Vector3(0, 1, 0),
-    //   rotateAngle
-    // ) / 10;
-    // car.parent.children[0].children[0].children[0].children[14].rotateOnAxis(
-    //   new THREE.Vector3(0, 1, 0),
-    //   rotateAngle
-    // ) / 10;
+    if (0 <= rightWheel.rotation.z <= 1) {
+      rightWheel.rotation.z += rotateAngle / 2;
+      rightRim.rotation.z += rotateAngle / 2;
+      leftWheel.rotation.z += rotateAngle / 2;
+      leftRim.rotation.z += rotateAngle / 2;
+    }
   }
   if (keyboard.pressed("D") && acceleration > 0) {
     car.rotateOnAxis(new THREE.Vector3(0, 0, 1), -rotateAngle);
-    // car.parent.children[0].children[0].children[0].children[13].rotateOnAxis(
-    //   new THREE.Vector3(0, 1, 0),
-    //   -rotateAngle
-    // ) / 10;
-    // car.parent.children[0].children[0].children[0].children[14].rotateOnAxis(
-    //   new THREE.Vector3(0, 1, 0),
-    //   -rotateAngle
-    // ) / 10;
+    if (0 <= rightWheel.rotation.z <= 1) {
+      rightWheel.rotation.z -= rotateAngle / 2;
+      rightRim.rotation.z -= rotateAngle / 2;
+      leftWheel.rotation.z -= rotateAngle / 2;
+      leftRim.rotation.z -= rotateAngle / 2;
+    }
   }
 
   if (keyboard.pressed("Z")) {
@@ -274,4 +298,4 @@ function onWindowResize() {
 
   renderer.setSize(container.clientWidth, container.clientHeight);
 }
-// window.addEventListener("resize", onWindowResize);
+// window.addEventListener("resize", onWindowResize); // почему-то перестало работать
