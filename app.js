@@ -197,23 +197,24 @@ function onDrive(e) {
     `скорость вращения колеса, ${car.parent.children[0].children[0].children[0].children[11].rotation.x}`
   );
   // console.log(`Координаты машины: x: ${parseInt(car.position.x)} y: ${parseInt(car.position.y)} z: ${parseInt(car.position.z)}`); - довольно странно
-
+  
   var delta = clock.getDelta(); // seconds.
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
+  car.translateY(parseInt(-acceleration * delta));
+  // acceleration = 0.7*acceleration; // сила трения (?)
   // порядок вращения колес
   // car.parent.children[0].children[0].children[0].children[13].rotation.order =
   //   "YXZ";
   // car.parent.children[0].children[0].children[0].children[14].rotation.order =
   //   "YXZ";
   if (keyboard.pressed("W")) {
-    if (acceleration <= 1400) acceleration += 10;
+    if (acceleration <= 1400) acceleration += 20;
     console.log(acceleration);
     // car.parent.children[0].children[0].children[0].children[13].rotateOnAxis(
     //   new THREE.Vector3(0, 0, 1),
     //   rotateAngle
     // )/10; - здесь тоже ось вращения не срабатывает
   }
-  car.translateY(parseInt(-acceleration * delta));
 
   car.parent.children[0].children[0].children[0].children[11].rotation.x +=
     acceleration * 0.0005;
