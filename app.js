@@ -197,7 +197,7 @@ function onDrive(e) {
     `скорость вращения колеса, ${car.parent.children[0].children[0].children[0].children[11].rotation.x}`
   );
   // console.log(`Координаты машины: x: ${parseInt(car.position.x)} y: ${parseInt(car.position.y)} z: ${parseInt(car.position.z)}`); - довольно странно
-  
+
   var delta = clock.getDelta(); // seconds.
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
   car.translateY(parseInt(-acceleration * delta));
@@ -241,7 +241,7 @@ function onDrive(e) {
     // car.parent.children[0].children[0].children[0].children[13].rotateOnAxis(
     //   new THREE.Vector3(0, 1, 0),
     //   rotateAngle
-    // ) / 10; 
+    // ) / 10;
     // car.parent.children[0].children[0].children[0].children[14].rotateOnAxis(
     //   new THREE.Vector3(0, 1, 0),
     //   rotateAngle
