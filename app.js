@@ -5,7 +5,6 @@ console.clear();
 var rotation_matrix = new THREE.Matrix4().identity();
 var clock = new THREE.Clock();
 var keyboard = new THREEx.KeyboardState();
-
 let container;
 let camera;
 let renderer;
