@@ -41,7 +41,7 @@ function makeDrive() {
   let body = document.querySelector("body");
   document.body.style.background = "none";
   body.appendChild(makeInfoContainer);
-  // body.addEventListener("keydown", logKey);
+
   gui.close();
   // FLOOR
   var floorTexture = new THREE.ImageUtils.loadTexture(
@@ -204,15 +204,16 @@ function onDrive(e) {
   var delta = clock.getDelta(); // seconds.
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
   car.translateY(parseInt(-acceleration * delta));
-  // acceleration = 0.7*acceleration; // сила трения (?)
+  acceleration -= 0.0035 * acceleration; // сила трения (?)
   // порядок вращения колес
-  let leftWheel = car.parent.children[0].children[0].children[0].children[13];
-  let rightWheel = car.parent.children[0].children[0].children[0].children[14];
+  let leftWheel = car.parent.children[0].children[0].children[0].children[13]; // левое переднее колесо
+  let rightWheel = car.parent.children[0].children[0].children[0].children[14]; // правое переднее колесо
   let leftRim = car.parent.children[0].children[0].children[0].children[21]; // левая передняя шина
   let rightRim = car.parent.children[0].children[0].children[0].children[22]; // правая передняя шина
   leftWheel.rotation.order = "ZYX";
   rightWheel.rotation.order = "ZYX";
-  console.log(leftWheel.rotation.y);
+
+
 
   // СПОСОБ УМНЫХ ЛЮДЕЙ //
 
@@ -265,20 +266,28 @@ function onDrive(e) {
   }
   // rotate left/right/up/down
   if (keyboard.pressed("A")) {
-    rightWheel.rotation.z += rotateAngle;
-    rightRim.rotation.z += rotateAngle;
-    leftWheel.rotation.z += rotateAngle;
-    leftRim.rotation.z += rotateAngle;
-
+    console.log(keyboard);
+    if (leftWheel.rotation.z <= 0.9) {
+      rightWheel.rotation.z += rotateAngle;
+      rightRim.rotation.z += rotateAngle;
+      leftWheel.rotation.z += rotateAngle;
+      leftRim.rotation.z += rotateAngle;
+    }
     if (acceleration > 0)
       car.rotateOnAxis(new THREE.Vector3(0, 0, 1), rotateAngle);
   }
+  // if (keyboard.pressed("A") && keyboard._onkeyup) {
+  //   rightWheel.rotation.z = 5;
+  //   rightRim.rotation.z = 5;
+  // }
   if (keyboard.pressed("D")) {
-    rightWheel.rotation.z -= rotateAngle;
-    rightRim.rotation.z -= rotateAngle;
-    leftWheel.rotation.z -= rotateAngle;
-    leftRim.rotation.z -= rotateAngle;
-
+    if (rightWheel.rotation.z >= -0.9) {
+      console.log(rightWheel.rotation.z);
+      rightWheel.rotation.z -= rotateAngle;
+      rightRim.rotation.z -= rotateAngle;
+      leftWheel.rotation.z -= rotateAngle;
+      leftRim.rotation.z -= rotateAngle;
+    }
     if (acceleration > 0)
       car.rotateOnAxis(new THREE.Vector3(0, 0, 1), -rotateAngle);
   }
