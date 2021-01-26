@@ -1,8 +1,8 @@
 "use strict";
 console.clear();
-// import * as THREE from "https://threejs.org/build/three.module.js";
+
 //Основные переменные
-var rotation_matrix = new THREE.Matrix4().identity();
+// var rotation_matrix = new THREE.Matrix4().identity(); // пока не удалось реализовать этот вариант
 var clock = new THREE.Clock();
 var keyboard = new THREEx.KeyboardState();
 let container;
@@ -82,10 +82,10 @@ function makeDrive() {
   car.rotation.z = Math.PI;
   car.rotation.x = -1.57;
   //сбрасываем скорость вращения колёс
+  car.parent.children[0].children[0].children[0].children[10].rotation.x = 0;
   car.parent.children[0].children[0].children[0].children[11].rotation.x = 0;
   car.parent.children[0].children[0].children[0].children[12].rotation.x = 0;
   car.parent.children[0].children[0].children[0].children[13].rotation.x = 0;
-  car.parent.children[0].children[0].children[0].children[14].rotation.x = 0;
 }
 
 drive.addEventListener("click", makeDrive);
@@ -187,33 +187,45 @@ function onStyle() {
   rimIDcolor.g = settings.rimsGreen;
   rimIDcolor.b = settings.rimsBlue;
   // четыре колеса
-  car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.05;
-  car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.05;
-  car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.05;
-  car.parent.children[0].children[0].children[0].children[14].rotation.x += 0.05;
+  // car.parent.children[0].children[0].children[0].children[11].rotation.x += 0.05;
+  // car.parent.children[0].children[0].children[0].children[12].rotation.x += 0.05;
+  // car.parent.children[0].children[0].children[0].children[13].rotation.x += 0.05;
+  // car.parent.children[0].children[0].children[0].children[10].rotation.x += 0.05;
   //режим свободной езды
 }
 function onDrive(e) {
   console.log(`Скорость: ${acceleration / 10}`);
   console.log(
-    `скорость вращения колеса, ${car.parent.children[0].children[0].children[0].children[11].rotation.x}`
+    `скорость вращения колеса, ${car.parent.children[0].children[0].children[0].children[10].rotation.x}`
   );
   // console.log(`Координаты машины: x: ${parseInt(car.position.x)} y: ${parseInt(car.position.y)} z: ${parseInt(car.position.z)}`); - довольно странно
 
   var delta = clock.getDelta(); // seconds.
   var rotateAngle = (Math.PI / 4) * delta; // pi/2 radians (90 degrees) per second
   car.translateY(parseInt(-acceleration * delta));
-  acceleration -= 0.0035 * acceleration; // сила трения (?)
   // порядок вращения колес
-  let leftWheel = car.parent.children[0].children[0].children[0].children[13]; // левое переднее колесо
-  let rightWheel = car.parent.children[0].children[0].children[0].children[14]; // правое переднее колесо
-  let leftRim = car.parent.children[0].children[0].children[0].children[21]; // левая передняя шина
-  let rightRim = car.parent.children[0].children[0].children[0].children[22]; // правая передняя шина
+  let leftWheel = car.parent.children[0].children[0].children[0].children[12]; // левое переднее колесо
+  let rightWheel = car.parent.children[0].children[0].children[0].children[13]; // правое переднее колесо
+  let leftRim = car.parent.children[0].children[0].children[0].children[20]; // левая передняя шина
+  let rightRim = car.parent.children[0].children[0].children[0].children[21]; // правая передняя шина
   leftWheel.rotation.order = "ZYX";
   rightWheel.rotation.order = "ZYX";
 
-
-
+  if (acceleration > 0) {
+    acceleration -= 0.0035 * parseInt(acceleration); // сила трения (?)
+    if (rightWheel.rotation.z > 0) {
+      rightWheel.rotation.z -= rotateAngle / 2;
+      rightRim.rotation.z -= rotateAngle / 2;
+      leftWheel.rotation.z -= rotateAngle / 2;
+      leftRim.rotation.z -= rotateAngle / 2;
+    }
+    if (leftWheel.rotation.z < 0) {
+      rightWheel.rotation.z += rotateAngle / 2;
+      rightRim.rotation.z += rotateAngle / 2;
+      leftWheel.rotation.z += rotateAngle / 2;
+      leftRim.rotation.z += rotateAngle / 2;
+    }
+  }
   // СПОСОБ УМНЫХ ЛЮДЕЙ //
 
   // document.addEventListener("keydown", (event) => {
@@ -247,9 +259,9 @@ function onDrive(e) {
     console.log("Скорость = ", acceleration);
   }
 
-  car.parent.children[0].children[0].children[0].children[11].rotation.x +=
+  car.parent.children[0].children[0].children[0].children[10].rotation.x +=
     acceleration * 0.0005;
-  car.parent.children[0].children[0].children[0].children[12].rotation.x +=
+  car.parent.children[0].children[0].children[0].children[11].rotation.x +=
     acceleration * 0.0005;
   leftWheel.rotation.x += acceleration * 0.0005;
   rightWheel.rotation.x += acceleration * 0.0005;
@@ -257,8 +269,8 @@ function onDrive(e) {
   if (keyboard.pressed("S")) {
     if (acceleration >= 10) {
       acceleration -= 20;
+      car.parent.children[0].children[0].children[0].children[10].rotation.x = 0;
       car.parent.children[0].children[0].children[0].children[11].rotation.x = 0;
-      car.parent.children[0].children[0].children[0].children[12].rotation.x = 0;
       leftWheel.rotation.x = 0;
       rightWheel.rotation.x = 0;
     }
@@ -272,13 +284,10 @@ function onDrive(e) {
       leftWheel.rotation.z += rotateAngle;
       leftRim.rotation.z += rotateAngle;
     }
-    if (acceleration > 0)
+    if (acceleration > 20)
       car.rotateOnAxis(new THREE.Vector3(0, 0, 1), rotateAngle);
   }
-  // if (keyboard.pressed("A") && keyboard._onkeyup) {
-  //   rightWheel.rotation.z = 5;
-  //   rightRim.rotation.z = 5;
-  // }
+
   if (keyboard.pressed("D")) {
     if (rightWheel.rotation.z >= -0.9) {
       console.log(rightWheel.rotation.z);
@@ -287,7 +296,7 @@ function onDrive(e) {
       leftWheel.rotation.z -= rotateAngle;
       leftRim.rotation.z -= rotateAngle;
     }
-    if (acceleration > 0)
+    if (acceleration > 20)
       car.rotateOnAxis(new THREE.Vector3(0, 0, 1), -rotateAngle);
   }
 
