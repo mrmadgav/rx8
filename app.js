@@ -20,12 +20,12 @@ let settings = {
   rotationZ: 0.0,
   // ключи цвета кузова
   bodyRed: 0.2,
-  bodyGreen: 0.2,
-  bodyBlue: 0.2,
+  bodyGreen: 0.0,
+  bodyBlue: 0.095,
   // ключи цвета дисков
-  rimsRed: 0.2,
-  rimsGreen: 0.2,
-  rimsBlue: 0.2,
+  rimsRed: 0.0,
+  rimsGreen: 0.1,
+  rimsBlue: 0.0,
 };
 
 // кнопка переключения анимации (!)
@@ -128,8 +128,8 @@ function init() {
 
   gui = new dat.GUI();
   // создаем ползунки вращения авто
-  gui.add(settings, "rotationX").min(-1.5).max(1.5).step(0.001);
-  gui.add(settings, "rotationY").min(-0.2).max(0.2).step(0.001);
+  // gui.add(settings, "rotationX").min(-1.5).max(1.5).step(0.001);
+  // gui.add(settings, "rotationY").min(-0.2).max(0.2).step(0.001);
   gui.add(settings, "rotationZ").min(-0.03).max(0.03).step(0.001);
   // папка с настроками цвета авто
   var guiBodyColors = gui.addFolder("Choose Body Color");
