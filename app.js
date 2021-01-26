@@ -66,12 +66,12 @@ function makeDrive() {
   // skyBox
   const skyLoader = new THREE.CubeTextureLoader();
   const skyTexture = skyLoader.load([
-    "./env_textures/posx.jpg",
-    "./env_textures/negx.jpg",
-    "./env_textures/posy.jpg",
-    "./env_textures/negy.jpg",
-    "./env_textures/posz.jpg",
-    "./env_textures/negz.jpg",
+    "./env_textures/webGLpan/posx.png",
+    "./env_textures/webGLpan/negx.png",
+    "./env_textures/webGLpan/posy.png",
+    "./env_textures/webGLpan/negy.png",
+    "./env_textures/webGLpan/posz.png",
+    "./env_textures/webGLpan/negz.png",
   ]);
   skyTexture.encoding = THREE.sRGBEncoding;
   scene.background = skyTexture;
@@ -315,4 +315,4 @@ function onWindowResize() {
 
   renderer.setSize(container.clientWidth, container.clientHeight);
 }
-// window.addEventListener("resize", onWindowResize); // почему-то перестало работать
+window.addEventListener("resize", onWindowResize); // почему-то перестало работать
