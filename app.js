@@ -57,6 +57,18 @@ function makeDrive() {
   floor.position.y = -0.5;
   floor.rotation.x = Math.PI / 2;
   scene.add(floor);
+
+  var spotLight1 = new THREE.SpotLight(0xffffff);
+  spotLight1.position.set(-40, 60, -10);
+  scene.add(spotLight1);
+
+  var spotLight2 = new THREE.SpotLight(0xffffff);
+  spotLight2.position.set(-340, 60, -10);
+  scene.add(spotLight2);
+
+  var spotLight3 = new THREE.SpotLight(0xffffff);
+  spotLight1.position.set(-1500, 120, 30);
+  scene.add(spotLight3);
   //сетка
   // let gridHelper = new THREE.GridHelper(8000, 50);
   // scene.add(gridHelper);
@@ -98,6 +110,7 @@ loader.load(
     scene.add(gltf.scene);
     car = gltf.scene.children[0];
     car.castShadow = true;
+    car.receiveShadow = true;
     animate(); // функция запускает анимацию
   }
 );
