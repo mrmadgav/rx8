@@ -104,7 +104,7 @@ drive.addEventListener("click", makeDrive);
 
 let loader = new THREE.GLTFLoader();
 loader.load(
-  "./mazda_rx8/sceneUpdated_withWheels and front rims.gltf",
+  "./mazda_rx8/sceneUpdated_withWheels and front rims QUALITY.gltf",
   function (gltf) {
     init(); // запускаем всю сцену
     scene.add(gltf.scene);
@@ -130,10 +130,10 @@ function init() {
   camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   camera.position.set(0, 50, 600);
 
-  const ambient = new THREE.AmbientLight(0x404040, 2);
+  const ambient = new THREE.AmbientLight(0x404040, 3);
   scene.add(ambient);
 
-  const light = new THREE.DirectionalLight(0xffffff, 2);
+  const light = new THREE.DirectionalLight(0xffffff, 3);
   light.position.set(50, 50, 100);
   scene.add(light);
 
